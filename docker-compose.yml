@@ -14,13 +14,15 @@ services:
       - POSTGRES_DB=testdb
     restart: unless-stopped
   springbootapp:
-    image: budget-tracker
+    build: .
     network_mode: bridge
     container_name: budget-tracker
     expose:
       - 8080
     ports:
       - 8080:8080
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/testdb
     restart: unless-stopped
     depends_on:
       - postgres

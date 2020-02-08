@@ -8,12 +8,15 @@ enum class BankAccount {
     SAVINGS
 }
 
-typealias Dollars = Float
+data class TransactionId(val value: Int)
+data class Dollars(val value: Double)
+data class Description(val value: String)
 
 data class Transaction(
+    val id: TransactionId,
     val date: Date,
     val account: BankAccount,
-    val description: String,
+    val description: Description,
     val amount: Dollars,
     val categories: List<Category>
 )

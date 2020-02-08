@@ -23,6 +23,7 @@ type RecordTransactionsResponse {
 }
 
 type Transaction {
+  date: String!
   description: String!
   amount: Float!
   account: ID!

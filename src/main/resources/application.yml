@@ -1,9 +1,9 @@
 spring:
   datasource:
-    url: jdbc:postgresql://postgres:5432/testdb
+    url: jdbc:postgresql://localhost:5432/testdb
     driver-class-name: org.postgresql.Driver
     username: postgres
     password: admin
   jpa:
     properties.hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
-    hibernate.ddl-auto: none
+    hibernate.ddl-adockeuto: none

@@ -18,14 +18,16 @@ class TransactionFetcher(
 typealias TransactionsDTO = List<TransactionDTO>
 
 data class TransactionDTO(
+    val date: String,
     val description: String,
-    val amount: Float,
+    val amount: Double,
     val account: String
 )
 
 private fun Transaction.toDTO(): TransactionDTO =
     TransactionDTO(
-        description,
-        amount,
+        date.toString(),
+        description.value,
+        amount.value,
         account.name
     )

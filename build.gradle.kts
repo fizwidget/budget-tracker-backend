@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.springframework.boot.gradle.tasks.run.BootRun
 
 plugins {
     id("org.springframework.boot") version "2.2.2.RELEASE"
@@ -82,4 +83,22 @@ tasks.register("pushDockerImage") {
             commandLine("docker", "push", "fizwidget/budget-tracker")
         }
     }
+}
+
+val startPostgres = tasks.register<Exec>("startPostgres") {
+    group = "application"
+    description = "Starts Postgres in a Docker container"
+
+    commandLine("docker-compose", "up", "-d", "postgres")
+}
+
+val stopPostgres = tasks.register<Exec>("stopPostgres") {
+    group = "application"
+    description = "Stops Postgres Docker container"
+
+    commandLine("docker", "stop", "postgres")
+}
+
+tasks.withType<BootRun> {
+    // dependsOn(startPostgres)
 }
