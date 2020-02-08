@@ -1,0 +1,34 @@
+type Query {
+  transactions(startDate: String, endDate: String, account: ID): [Transaction]
+  categories: [Category!]!
+}
+
+type Mutation {
+  recordTransactions(input: RecordTransactionsInput!): RecordTransactionsResponse
+}
+
+input RecordTransactionsInput {
+  transactions: [TransactionInput!]!
+}
+
+input TransactionInput {
+  date: String!
+  amount: Float!
+  account: ID!
+}
+
+type RecordTransactionsResponse {
+  success: Boolean!
+  transactions(startDate: String, endDate: String): [Transaction]
+}
+
+type Transaction {
+  description: String!
+  amount: Float!
+  account: ID!
+}
+
+type Category {
+  id: ID!,
+  name: String!
+}
