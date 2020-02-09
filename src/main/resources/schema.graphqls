@@ -3,10 +3,17 @@ type Query {
   Query transactions between a particular start and end date.
   """
   transactions(startDate: String, endDate: String): [Transaction]!
+
   """
   List all categories.
   """
   categories: [Category]!
+
+  """
+  List all bank accounts.
+  """
+  accounts: [Account]!
+
   """
   Calculate the income vs. expenses savings rate.
   """
@@ -18,26 +25,31 @@ type Transaction {
   Opaque identifier.
   """
   id: ID!,
+
   """
   Date the transaction occured on (including timezone offset).
 
   TODO: Specify exact format.
   """
   date: String!
+
   """
   Description of the transaction, as per the bank record.
   """
   description: String!
+
   """
   Dollar amount of the transaction.
 
   Positive values for money coming in, negative values for money going out.
   """
   amount: Float!
+
   """
   Account the transaction occured in (e.g. "Savings").
   """
   account: Account
+
   """
   Category the transaction falls into (`null` if the transaction has not been categorised).
   """
@@ -49,6 +61,7 @@ type Category {
   Opaque identifier.
   """
   id: ID!,
+
   """
   Category name, e.g. "Transport".
   """
@@ -60,6 +73,7 @@ type Account {
   Opaque identifier.
   """
   id: ID!,
+
   """
   Name of the account, e.g. "Savings".
   """
@@ -71,10 +85,12 @@ type Mutation {
   Create an account that transactions occur in.
   """
   createAccount(input: CreateAccountInput!): CreateAccountResponse
+
   """
   Create a category that transactions can be organised into.
   """
   createCategory(input: CreateCategoryInput!): CreateCategoryResponse
+
   """
   Record a series of transactions.
 
@@ -88,14 +104,16 @@ interface MutationResponse {
   True of the mutation succeeded, false if it failed.
   """
   success: Boolean!
+
   """
   A human-readable message to assist with debugging.
   """
   message: String!
+
   """
   A machine-readable enum to allow frontends to disambiguate different types of errors.
   """
-  errorType: String!
+  errorType: String
 }
 
 input CreateAccountInput {
@@ -103,6 +121,7 @@ input CreateAccountInput {
   Account identifier, as specified by the bank.
   """
   id: ID!
+
   """
   Name of the account, e.g. "Savings".
   """
@@ -112,7 +131,8 @@ input CreateAccountInput {
 type CreateAccountResponse implements MutationResponse {
   success: Boolean!
   message: String!
-  errorType: String!
+  errorType: String
+
   """
   The created account.
   """
@@ -129,7 +149,8 @@ input CreateCategoryInput {
 type CreateCategoryResponse implements MutationResponse {
   success: Boolean!
   message: String!
-  errorType: String!
+  errorType: String
+
   """
   The created category.
   """
@@ -146,7 +167,8 @@ input RecordTransactionsInput {
 type RecordTransactionsResponse implements MutationResponse{
   success: Boolean!
   message: String!
-  errorType: String!
+  errorType: String
+
   """
   List of transactions (including the newly created ones, if they fall within the requested interval).
   """

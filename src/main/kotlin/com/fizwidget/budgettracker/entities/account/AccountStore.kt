@@ -1,6 +1,7 @@
 package com.fizwidget.budgettracker.entities.account
 
 interface AccountStore {
-    fun getByIds(id: List<AccountId>): List<Account>
+    fun create(id: AccountId, name: String): Int
+    fun getByIds(ids: List<AccountId>): List<Account>
     fun getAll(): List<Account>
 }

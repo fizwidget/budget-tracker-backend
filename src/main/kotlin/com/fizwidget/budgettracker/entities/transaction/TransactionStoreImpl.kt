@@ -23,7 +23,7 @@ private val mapper = RowMapper { rs: ResultSet, _: Int ->
     Transaction(
         id = TransactionId(rs.getInt(idColumn)),
         date = rs.getDate(dateColumn),
-        account = AccountId(rs.getInt(accountColumn)),
+        account = AccountId(rs.getString(accountColumn)),
         description = rs.getString(descriptionColumn),
         amount = Dollars(rs.getDouble(amountColumn)),
         category = rs.getInt(categoryColumn).let { id ->

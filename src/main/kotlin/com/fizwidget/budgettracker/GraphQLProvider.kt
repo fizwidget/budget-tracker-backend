@@ -46,6 +46,7 @@ class GraphQLProvider(
                 newTypeWiring("Query")
                     .dataFetcher("transactions", transactionFetchers.getAll)
                     .dataFetcher("categories", categoryFetchers.getAll)
+                    .dataFetcher("accounts", accountFetchers.getAll)
                     .dataFetcher("savingsRate", statisticsFetchers.savingsRate)
             )
             .type(

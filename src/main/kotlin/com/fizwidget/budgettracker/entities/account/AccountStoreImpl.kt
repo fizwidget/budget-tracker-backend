@@ -10,6 +10,19 @@ class AccountStoreImpl(
     private val database: NamedParameterJdbcTemplate
 ) : AccountStore {
 
+    override fun create(id: AccountId, name: String): Int =
+        database.update(
+            """
+            INSERT INTO $tableName VALUES (:id, :name)
+            ON CONFLICT (id)
+            DO UPDATE SET name = :name
+            """,
+            mapOf(
+                "id" to id.value,
+                "name" to name
+            )
+        )
+
     override fun getByIds(ids: List<AccountId>): List<Account> =
         database.query(
             "SELECT * FROM $tableName WHERE $idColumn in :ids",
@@ -26,7 +39,7 @@ class AccountStoreImpl(
 
 private val mapper = RowMapper { rs: ResultSet, _: Int ->
     Account(
-        id = AccountId(rs.getInt(idColumn)),
+        id = AccountId(rs.getString(idColumn)),
         name = rs.getString(nameColumn)
     )
 }

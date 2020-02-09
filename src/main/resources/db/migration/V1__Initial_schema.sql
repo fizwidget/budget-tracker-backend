@@ -1,5 +1,5 @@
 CREATE TABLE account (
-    id integer PRIMARY KEY,
+    id varchar(30) PRIMARY KEY,
     name varchar(100) NOT NULL UNIQUE
 );
 
@@ -10,7 +10,7 @@ CREATE TABLE category (
 
 CREATE TABLE transaction (
     id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    account integer REFERENCES account,
+    account varchar(100) REFERENCES account,
     category integer REFERENCES category,
     date timestamp with time zone NOT NULL,
     amount numeric(6, 4) NOT NULL,
