@@ -1,6 +1,7 @@
 package com.fizwidget.budgettracker.entities.account
 
 import com.fizwidget.budgettracker.entities.common.MutationResponseDTO
+import com.fizwidget.budgettracker.entities.common.parseArgument
 import graphql.schema.DataFetcher
 import org.springframework.stereotype.Component
 
@@ -22,7 +23,7 @@ class AccountFetchers(
     }
 
     val create = DataFetcher<CreateAccountResponseDTO> { environment ->
-        val input: CreateAccountInputDTO = environment.getArgument("input")
+        val input: CreateAccountInputDTO = environment.parseArgument("input")
 
         CreateAccountResponseDTO(
             success = true,

@@ -1,6 +1,7 @@
 package com.fizwidget.budgettracker.entities.transaction
 
 import com.fizwidget.budgettracker.entities.common.MutationResponseDTO
+import com.fizwidget.budgettracker.entities.common.parseArgument
 import graphql.schema.DataFetcher
 import org.springframework.stereotype.Component
 
@@ -14,8 +15,7 @@ class TransactionFetchers(
     }
 
     val record = DataFetcher<RecordTransactionsResponseDTO> { environment ->
-        val input: RecordTransactionsInputDTO = environment.getArgument("input")
-        val csv = input.csv
+        val input: RecordTransactionsInputDTO = environment.parseArgument("input")
 
         RecordTransactionsResponseDTO(
             success = true,
@@ -25,7 +25,7 @@ class TransactionFetchers(
                 TransactionDTO(
                     id = "42",
                     date = "Today",
-                    description = "CSV: $csv",
+                    description = "CSV: ${input.csv}",
                     amount = 101.5,
                     accountId = "29383",
                     categoryId = "48727"

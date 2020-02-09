@@ -35,7 +35,7 @@ private val mapper = RowMapper { rs: ResultSet, _: Int ->
     )
 }
 
-private const val tableName = "account_transaction"
+private const val tableName = "transaction"
 private const val idColumn = "id"
 private const val dateColumn = "date"
 private const val amountColumn = "amount"

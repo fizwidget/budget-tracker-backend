@@ -1,6 +1,7 @@
 package com.fizwidget.budgettracker.entities.category
 
 import com.fizwidget.budgettracker.entities.common.MutationResponseDTO
+import com.fizwidget.budgettracker.entities.common.parseArgument
 import graphql.schema.DataFetcher
 import org.springframework.stereotype.Component
 
@@ -26,7 +27,7 @@ class CategoryFetchers(
     }
 
     val create = DataFetcher<CreateCategoryResponseDTO> { environment ->
-        val input: CreateCategoryInputDTO = environment.getArgument("input")
+        val input: CreateCategoryInputDTO = environment.parseArgument("input")
 
         CreateCategoryResponseDTO(
             success = true,

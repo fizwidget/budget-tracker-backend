@@ -54,6 +54,12 @@ class GraphQLProvider(
                     .dataFetcher("category", categoryFetchers.get)
             )
             .type(
+                newTypeWiring("MutationResponse")
+                    .typeResolver { environment ->
+                        environment.schema.getObjectType("MutationResponse")
+                    }
+            )
+            .type(
                 newTypeWiring("Mutation")
                     .dataFetcher("createAccount", accountFetchers.create)
                     .dataFetcher("createCategory", categoryFetchers.create)
