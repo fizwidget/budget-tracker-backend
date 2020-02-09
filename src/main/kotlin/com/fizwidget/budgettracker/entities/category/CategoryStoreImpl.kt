@@ -1,7 +1,9 @@
 package com.fizwidget.budgettracker.entities.category
 
 import org.springframework.jdbc.core.RowMapper
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
+import org.springframework.jdbc.support.GeneratedKeyHolder
 import org.springframework.stereotype.Component
 import java.sql.ResultSet
 
@@ -9,6 +11,25 @@ import java.sql.ResultSet
 class CategoryStoreImpl(
     private val database: NamedParameterJdbcTemplate
 ) : CategoryStore {
+
+    override fun create(name: String): CategoryId? {
+        val keyHolder = GeneratedKeyHolder()
+
+        val count = database.update(
+        """
+            INSERT INTO $tableName (name) VALUES (:name)
+            ON CONFLICT DO NOTHING
+            RETURNING id
+            """,
+            MapSqlParameterSource(mapOf("name" to name)),
+            keyHolder
+        )
+
+        return if (count == 1)
+            keyHolder.key?.let(Number::toInt)?.let(::CategoryId)
+        else
+            null
+    }
 
     override fun getByIds(ids: List<CategoryId>): List<Category> =
         database.query(

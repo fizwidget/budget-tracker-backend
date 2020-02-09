@@ -8,8 +8,8 @@ class AccountServiceImpl(
     private val store: AccountStore
 ) : AccountService {
     override fun create(id: AccountId, name: String): Account =
-        store.create(id, name).let { count ->
-            if (count == 1)
+        store.create(id, name).let { success ->
+            if (success)
                 Account(id, name)
             else
                 throw CreateException()

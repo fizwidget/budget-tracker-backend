@@ -10,7 +10,7 @@ class AccountStoreImpl(
     private val database: NamedParameterJdbcTemplate
 ) : AccountStore {
 
-    override fun create(id: AccountId, name: String): Int =
+    override fun create(id: AccountId, name: String): Boolean =
         database.update(
             """
             INSERT INTO $tableName VALUES (:id, :name)
@@ -21,7 +21,7 @@ class AccountStoreImpl(
                 "id" to id.value,
                 "name" to name
             )
-        )
+        ).let { count -> count == 1 }
 
     override fun getByIds(ids: List<AccountId>): List<Account> =
         database.query(

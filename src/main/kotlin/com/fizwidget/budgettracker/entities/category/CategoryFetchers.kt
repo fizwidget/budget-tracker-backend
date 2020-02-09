@@ -29,15 +29,21 @@ class CategoryFetchers(
     val create = DataFetcher<CreateCategoryResponseDTO> { environment ->
         val input: CreateCategoryInputDTO = environment.parseArgument("input")
 
-        CreateCategoryResponseDTO(
-            success = true,
-            message = "Category created",
-            errorType = null,
-            category = CategoryDTO(
-                id = "23883",
-                name = input.name
+        try {
+            CreateCategoryResponseDTO(
+                success = true,
+                message = "Category created",
+                errorType = null,
+                category = service.create(input.name).toDTO()
             )
-        )
+        } catch (exception: Exception) {
+            CreateCategoryResponseDTO(
+                success = false,
+                message = exception.message ?: "Unknown error",
+                errorType = "UNKNOWN",
+                category = null
+            )
+        }
     }
 }
 
