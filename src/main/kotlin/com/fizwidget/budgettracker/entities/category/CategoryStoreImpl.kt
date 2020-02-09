@@ -16,9 +16,11 @@ class CategoryStoreImpl(
         val keyHolder = GeneratedKeyHolder()
 
         val count = database.update(
+            // Note: `SET name` is needed to make sure the ID is put into the key holder.
         """
             INSERT INTO $tableName (name) VALUES (:name)
-            ON CONFLICT DO NOTHING
+            ON CONFLICT (name) DO UPDATE
+            SET name = :name 
             RETURNING id
             """,
             MapSqlParameterSource(mapOf("name" to name)),
