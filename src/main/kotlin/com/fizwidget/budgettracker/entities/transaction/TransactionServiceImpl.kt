@@ -1,4 +1,4 @@
-package com.fizwidget.budgettracker.transaction
+package com.fizwidget.budgettracker.entities.transaction
 
 import org.springframework.stereotype.Service
 
@@ -7,6 +7,6 @@ class TransactionServiceImpl(
     val transactionStore: TransactionStore
 ) : TransactionService {
 
-    override fun getTransactions(): List<Transaction> =
-        transactionStore.getTransactions()
+    override fun getAll(): List<Transaction> =
+        transactionStore.getAll()
 }
