@@ -15,23 +15,24 @@ class TransactionFetchers(
     }
 
     val record = DataFetcher<RecordTransactionsResponseDTO> { environment ->
-        val input: RecordTransactionsInputDTO = environment.parseArgument("input")
+        try {
+            val input: RecordTransactionsInputDTO = environment.parseArgument("input")
+            service.record(Csv(input.csv))
 
-        RecordTransactionsResponseDTO(
-            success = true,
-            message = "Transactions recorded",
-            errorType = null,
-            transactions = listOf(
-                TransactionDTO(
-                    id = "42",
-                    date = "Today",
-                    description = "CSV: ${input.csv}",
-                    amount = 101.5,
-                    accountId = "29383",
-                    categoryId = "48727"
-                )
+            RecordTransactionsResponseDTO(
+                success = true,
+                message = "Transactions recorded",
+                errorType = null,
+                transactions = service.getAll().map(Transaction::toDTO)
             )
-        )
+        } catch (exception: Exception) {
+            RecordTransactionsResponseDTO(
+                success = false,
+                message = exception.message ?: "Unknown error",
+                errorType = "UNKNOWN",
+                transactions = null
+            )
+        }
     }
 }
 
@@ -64,5 +65,5 @@ data class RecordTransactionsResponseDTO(
     override val success: Boolean,
     override val message: String,
     override val errorType: String?,
-    val transactions: TransactionsDTO
+    val transactions: TransactionsDTO?
 ): MutationResponseDTO

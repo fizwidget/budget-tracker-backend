@@ -27,11 +27,11 @@ class AccountFetchers(
     }
 
     val create = DataFetcher<CreateAccountResponseDTO> { environment ->
-        val input: CreateAccountInputDTO = environment.parseArgument("input")
-        val id = AccountId(input.id)
-        val name = input.name
-
         try {
+            val input: CreateAccountInputDTO = environment.parseArgument("input")
+            val id = AccountId(input.id)
+            val name = input.name
+
             CreateAccountResponseDTO(
                 success = true,
                 message = "Account created",

@@ -17,6 +17,26 @@ class TransactionStoreImpl(
             "SELECT * FROM $tableName",
             mapper
         )
+
+    override fun record(transactions: List<ParsedTransaction>) {
+        database.batchUpdate(
+            """
+            INSERT INTO $tableName ($accountColumn, $categoryColumn, $dateColumn, $amountColumn, $descriptionColumn, $rawColumn)
+            VALUES (:account, :date, :amount, :description, :raw)
+            """,
+            transactions
+                .map {
+                    mapOf(
+                        "account" to it.account,
+                        "date" to it.date,
+                        "amount" to it.amount,
+                        "description" to it.description,
+                        "raw" to it.raw
+                    )
+                }
+                .toTypedArray()
+        )
+    }
 }
 
 private val mapper = RowMapper { rs: ResultSet, _: Int ->
@@ -42,3 +62,4 @@ private const val amountColumn = "amount"
 private const val accountColumn = "account"
 private const val descriptionColumn = "description"
 private const val categoryColumn = "category"
+private const val rawColumn = "raw"

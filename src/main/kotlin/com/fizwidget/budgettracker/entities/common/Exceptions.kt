@@ -1,3 +1,6 @@
 package com.fizwidget.budgettracker.entities.common
 
-class CreateException: Exception()
+sealed class BudgetTrackerException: Exception()
+
+class CreateException: BudgetTrackerException()
+class InvalidTransactionsException: BudgetTrackerException()

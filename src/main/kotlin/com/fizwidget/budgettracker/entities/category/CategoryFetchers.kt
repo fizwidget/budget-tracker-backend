@@ -27,9 +27,9 @@ class CategoryFetchers(
     }
 
     val create = DataFetcher<CreateCategoryResponseDTO> { environment ->
-        val input: CreateCategoryInputDTO = environment.parseArgument("input")
-
         try {
+            val input: CreateCategoryInputDTO = environment.parseArgument("input")
+
             CreateCategoryResponseDTO(
                 success = true,
                 message = "Category created",

@@ -1,23 +1,34 @@
 type Query {
   """
-  Query transactions between a particular start and end date.
+  Query transactions, optionally filtering by start date, end date, and category.
   """
-  transactions(startDate: String, endDate: String): [Transaction]!
+  transactions(timePeriod: TimePeriodInput, category: String): [Transaction!]
 
   """
   List all categories.
   """
-  categories: [Category]!
+  categories: [Category!]
 
   """
   List all bank accounts.
   """
-  accounts: [Account]!
+  accounts: [Account!]
 
   """
-  Calculate the income vs. expenses savings rate.
+  Calculate the savings rate (% of income that is saved/invested) for a particular time period.
   """
-  savingsRate: Float
+  savingsRate(timePeriod: TimePeriodInput): Float
+}
+
+input TimePeriodInput {
+  """
+  Start date for the time period (inclusive).
+  """
+  startDate: String
+  """
+  End date for the time period (inclusive).
+  """
+  endDate: String
 }
 
 type Transaction {
@@ -172,5 +183,5 @@ type RecordTransactionsResponse implements MutationResponse{
   """
   List of transactions (including the newly created ones, if they fall within the requested interval).
   """
-  transactions(startDate: String, endDate: String): [Transaction]
+  transactions(timePeriod: TimePeriodInput, category: String): [Transaction!]
 }
