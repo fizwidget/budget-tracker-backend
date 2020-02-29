@@ -2,6 +2,7 @@ package com.fizwidget.budgettracker.entities.category
 
 import com.fizwidget.budgettracker.entities.common.MutationResponseDTO
 import com.fizwidget.budgettracker.entities.common.parseArgument
+import com.fizwidget.budgettracker.entities.transaction.TransactionDTO
 import graphql.schema.DataFetcher
 import org.springframework.stereotype.Component
 
@@ -14,16 +15,15 @@ class CategoryFetchers(
         service.getAll().map(Category::toDTO)
     }
 
-    val get = DataFetcher<CategoryDTO> { environment ->
-        val parent: Map<String, Any> = environment.getSource()
-        val id = parent["accountId"] as? Int
+    val getTransactionCategory = DataFetcher<CategoryDTO> { environment ->
+        val transaction: TransactionDTO = environment.getSource()
 
-        if (id != null)
-            service
-                .get(CategoryId(id))
-                ?.toDTO()
-        else
-            throw RuntimeException("Category ID not specified")
+        transaction
+            .categoryId
+            ?.toInt()
+            ?.let(::CategoryId)
+            ?.let(service::get)
+            ?.let(Category::toDTO)
     }
 
     val create = DataFetcher<CreateCategoryResponseDTO> { environment ->

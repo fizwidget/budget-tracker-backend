@@ -53,8 +53,8 @@ private fun Transaction.toDTO(): TransactionDTO =
         date = date.toString(),
         description = description,
         amount = amount.value,
-        accountId = account.value.toString(),
-        categoryId = category?.value.toString()
+        accountId = account.value,
+        categoryId = category?.value?.toString()
     )
 
 data class RecordTransactionsInputDTO(

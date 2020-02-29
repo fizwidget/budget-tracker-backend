@@ -4,7 +4,8 @@ import com.fizwidget.budgettracker.entities.account.AccountId
 import com.fizwidget.budgettracker.entities.common.InvalidTransactionsException
 import com.github.doyaaaaaken.kotlincsv.dsl.csvReader
 import org.springframework.stereotype.Service
-import java.time.LocalDateTime
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @Service
 class TransactionServiceImpl(
@@ -28,12 +29,24 @@ private fun parseTransaction(columns: List<String>): ParsedTransaction {
     val (date, account, description, credit, debit) = columns
 
     return ParsedTransaction(
-        date = LocalDateTime.parse(date),
+        date = LocalDate.parse(date, dateFormatter).atStartOfDay(),
         account = AccountId(account),
         description = description,
-        amount = Dollars(credit.toDouble() + debit.toDouble()),
+        amount = parseDollars(credit) + parseDollars(debit),
         raw = columns.joinToString()
     )
 }
+
+private val dateFormatter =
+    DateTimeFormatter.ofPattern("dd/MM/yyyy")
+
+private fun parseDollars(value: String): Dollars =
+    Dollars(
+        if (value.isBlank())
+            0.0
+        else
+            value.toDouble()
+    )
+
 
 private const val expectedColumnCount = 5

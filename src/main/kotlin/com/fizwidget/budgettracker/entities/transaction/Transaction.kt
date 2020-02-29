@@ -7,6 +7,9 @@ import java.util.Date
 data class TransactionId(val value: Int)
 data class Dollars(val value: Double)
 
+operator fun Dollars.plus(other: Dollars): Dollars =
+    Dollars(value + other.value)
+
 data class Transaction(
     val id: TransactionId,
     val date: Date,

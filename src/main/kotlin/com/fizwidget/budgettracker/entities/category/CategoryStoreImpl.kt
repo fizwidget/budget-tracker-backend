@@ -35,14 +35,14 @@ class CategoryStoreImpl(
 
     override fun getByIds(ids: List<CategoryId>): List<Category> =
         database.query(
-            """SELECT * FROM $tableName WHERE $idColumn in :ids""",
+            "SELECT * FROM $tableName WHERE $idColumn in (:ids)",
             mapOf("ids" to ids.map(CategoryId::value)),
             mapper
         )
 
     override fun getAll(): List<Category> =
         database.query(
-            """SELECT * FROM $tableName""",
+            "SELECT * FROM $tableName",
             mapper
         )
 }

@@ -25,7 +25,7 @@ class AccountStoreImpl(
 
     override fun getByIds(ids: List<AccountId>): List<Account> =
         database.query(
-            "SELECT * FROM $tableName WHERE $idColumn in :ids",
+            "SELECT * FROM $tableName WHERE $idColumn in (:ids)",
             mapOf("ids" to ids.map(AccountId::value)),
             mapper
         )

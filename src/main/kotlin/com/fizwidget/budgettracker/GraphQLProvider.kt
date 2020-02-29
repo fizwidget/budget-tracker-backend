@@ -51,8 +51,8 @@ class GraphQLProvider(
             )
             .type(
                 newTypeWiring("Transaction")
-                    .dataFetcher("account", accountFetchers.get)
-                    .dataFetcher("category", categoryFetchers.get)
+                    .dataFetcher("account", accountFetchers.getTransactionAccount)
+                    .dataFetcher("category", categoryFetchers.getTransactionCategory)
             )
             .type(
                 newTypeWiring("MutationResponse")

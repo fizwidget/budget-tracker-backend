@@ -13,8 +13,8 @@ CREATE TABLE transaction (
     account varchar(100) REFERENCES account,
     category integer REFERENCES category,
     date timestamp with time zone NOT NULL,
-    amount numeric(6, 4) NOT NULL,
-    description varchar(100) NOT NULL,
+    amount numeric(12, 2) NOT NULL,
+    description varchar(500) NOT NULL,
     raw varchar(1000) NOT NULL UNIQUE,
     UNIQUE(account, date, amount, description)
 );

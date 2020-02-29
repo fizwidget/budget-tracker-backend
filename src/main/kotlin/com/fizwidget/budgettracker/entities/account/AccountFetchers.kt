@@ -2,6 +2,7 @@ package com.fizwidget.budgettracker.entities.account
 
 import com.fizwidget.budgettracker.entities.common.MutationResponseDTO
 import com.fizwidget.budgettracker.entities.common.parseArgument
+import com.fizwidget.budgettracker.entities.transaction.TransactionDTO
 import graphql.schema.DataFetcher
 import org.springframework.stereotype.Component
 
@@ -10,16 +11,10 @@ class AccountFetchers(
     private val service: AccountService
 ) {
 
-    val get = DataFetcher<AccountDTO> { environment ->
-        val parent: Map<String, Any> = environment.getSource()
-        val id = parent["accountId"] as? String
-
-        if (id != null)
-            service
-                .get(AccountId(id))
-                ?.toDTO()
-        else
-            throw RuntimeException("Account ID not specified")
+    val getTransactionAccount = DataFetcher<AccountDTO> { environment ->
+        val transaction: TransactionDTO = environment.getSource()
+        val id = AccountId(transaction.accountId)
+        service.get(id)?.toDTO()
     }
 
     val getAll = DataFetcher<AccountsDTO> {

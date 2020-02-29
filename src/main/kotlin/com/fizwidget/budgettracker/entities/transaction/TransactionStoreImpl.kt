@@ -21,15 +21,15 @@ class TransactionStoreImpl(
     override fun record(transactions: List<ParsedTransaction>) {
         database.batchUpdate(
             """
-            INSERT INTO $tableName ($accountColumn, $categoryColumn, $dateColumn, $amountColumn, $descriptionColumn, $rawColumn)
+            INSERT INTO $tableName ($accountColumn, $dateColumn, $amountColumn, $descriptionColumn, $rawColumn)
             VALUES (:account, :date, :amount, :description, :raw)
             """,
             transactions
                 .map {
                     mapOf(
-                        "account" to it.account,
+                        "account" to it.account.value,
                         "date" to it.date,
-                        "amount" to it.amount,
+                        "amount" to it.amount.value,
                         "description" to it.description,
                         "raw" to it.raw
                     )
