@@ -65,6 +65,7 @@ class GraphQLProvider(
                     .dataFetcher("createAccount", accountFetchers.create)
                     .dataFetcher("createCategory", categoryFetchers.create)
                     .dataFetcher("recordTransactions", transactionFetchers.record)
+                    .dataFetcher("categoriseTransaction", transactionFetchers.categorise)
             )
             .build()
 }

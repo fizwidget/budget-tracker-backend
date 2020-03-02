@@ -12,6 +12,13 @@ class TransactionStoreImpl(
     val database: NamedParameterJdbcTemplate
 ) : TransactionStore {
 
+    override fun get(id: TransactionId): Transaction =
+        database.query(
+            "SELECT * FROM $tableName WHERE $idColumn = :id",
+            mapOf("id" to id.value),
+            mapper
+        ).first()
+
     override fun getAll(): List<Transaction> =
         database.query(
             "SELECT * FROM $tableName",
@@ -23,6 +30,7 @@ class TransactionStoreImpl(
             """
             INSERT INTO $tableName ($accountColumn, $dateColumn, $amountColumn, $descriptionColumn, $rawColumn)
             VALUES (:account, :date, :amount, :description, :raw)
+            ON CONFLICT DO NOTHING
             """,
             transactions
                 .map {
@@ -35,6 +43,20 @@ class TransactionStoreImpl(
                     )
                 }
                 .toTypedArray()
+        )
+    }
+
+    override fun categorise(transactionId: TransactionId, categoryId: CategoryId) {
+        database.update(
+            """
+            UPDATE $tableName
+            SET $categoryColumn = :categoryId
+            WHERE $idColumn = :transactionId
+            """,
+            mapOf(
+                "categoryId" to categoryId.value,
+                "transactionId" to transactionId.value
+            )
         )
     }
 }

@@ -1,8 +1,8 @@
 type Query {
   """
-  Query transactions, optionally filtering by start date, end date, and category.
+  List transactions with an optional filter.
   """
-  transactions(timePeriod: TimePeriodInput, category: String): [Transaction!]
+  transactions(filter: TransactionsFilterInput): [Transaction!]
 
   """
   List all categories.
@@ -17,10 +17,21 @@ type Query {
   """
   Calculate the savings rate (% of income that is saved/invested) for a particular time period.
   """
-  savingsRate(timePeriod: TimePeriodInput): Float
+  savingsRate(timeRange: TimeRangeInput): Float
 }
 
-input TimePeriodInput {
+input TransactionsFilterInput {
+  """
+  Filter by categories.
+  """
+  categories: [String!]
+  """
+  Filter by a time range.
+  """
+  timeRange: TimeRangeInput
+}
+
+input TimeRangeInput {
   """
   Start date for the time period (inclusive).
   """
@@ -108,6 +119,11 @@ type Mutation {
   Transactions that have already been recorded will be ignored.
   """
   recordTransactions(input: RecordTransactionsInput!): RecordTransactionsResponse
+
+  """
+  Categorise a transaction.
+  """
+  catrgoriseTransaction(input: CategoriseTransactionInput!): CategoriseTransactionResponse
 }
 
 interface MutationResponse {
@@ -175,13 +191,35 @@ input RecordTransactionsInput {
   csv: String!
 }
 
-type RecordTransactionsResponse implements MutationResponse{
+type RecordTransactionsResponse implements MutationResponse {
   success: Boolean!
   message: String!
   errorType: String
 
   """
-  List of transactions (including the newly created ones, if they fall within the requested interval).
+  List transactions with an optional filter (including the newly created ones).
   """
-  transactions(timePeriod: TimePeriodInput, category: String): [Transaction!]
+  transactions(filter: TransactionsFilterInput): [Transaction!]
+}
+
+input CategoriseTransactionInput {
+  """
+  The transaction to categorise.
+  """
+  transactionId: ID!
+  """
+  The category to put the transaction into.
+  """
+  categoryId: ID!
+}
+
+type CategoriseTransactionResponse implements MutationResponse {
+  success: Boolean!
+  message: String!
+  errorType: String
+
+  """
+  The categorised transaction.
+  """
+  transaction: Transaction
 }

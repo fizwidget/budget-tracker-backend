@@ -1,6 +1,7 @@
 package com.fizwidget.budgettracker.entities.transaction
 
 import com.fizwidget.budgettracker.entities.account.AccountId
+import com.fizwidget.budgettracker.entities.category.CategoryId
 import com.fizwidget.budgettracker.entities.common.InvalidTransactionsException
 import com.github.doyaaaaaken.kotlincsv.dsl.csvReader
 import org.springframework.stereotype.Service
@@ -12,6 +13,9 @@ class TransactionServiceImpl(
     val store: TransactionStore
 ) : TransactionService {
 
+    override fun get(id: TransactionId): Transaction =
+        store.get(id)
+
     override fun getAll(): List<Transaction> =
         store.getAll()
 
@@ -20,6 +24,9 @@ class TransactionServiceImpl(
             .readAll(transactions.value)
             .map(::parseTransaction)
             .let { store.record(it) }
+
+    override fun categorise(transactionId: TransactionId, categoryId: CategoryId) =
+        store.categorise(transactionId, categoryId)
 }
 
 private fun parseTransaction(columns: List<String>): ParsedTransaction {
