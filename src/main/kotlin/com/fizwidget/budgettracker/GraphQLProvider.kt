@@ -71,7 +71,7 @@ class GraphQLProvider(
 }
 
 private fun loadResource(path: String): String =
-        ClassPathResource(path)
-                .let(ClassPathResource::getInputStream)
-                .let(FileCopyUtils::copyToByteArray)
-                .let { String(it, StandardCharsets.UTF_8) }
+    ClassPathResource(path)
+        .let(ClassPathResource::getInputStream)
+        .let(FileCopyUtils::copyToByteArray)
+        .let { String(it, StandardCharsets.UTF_8) }

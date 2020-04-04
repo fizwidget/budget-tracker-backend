@@ -16,8 +16,8 @@ class TransactionServiceImpl(
     override fun get(id: TransactionId): Transaction =
         store.get(id)
 
-    override fun getAll(): List<Transaction> =
-        store.getAll()
+    override fun getAll(filter: TransactionsFilter): List<Transaction> =
+        store.getAll(filter)
 
     override fun record(transactions: Csv) =
         csvReader()
@@ -54,6 +54,5 @@ private fun parseDollars(value: String): Dollars =
         else
             value.toDouble()
     )
-
 
 private const val expectedColumnCount = 5

@@ -6,7 +6,7 @@ import java.time.LocalDateTime
 
 interface TransactionStore {
     fun get(id: TransactionId): Transaction
-    fun getAll(): List<Transaction>
+    fun getAll(filter: TransactionsFilter): List<Transaction>
     fun record(transactions: List<ParsedTransaction>)
     fun categorise(transactionId: TransactionId, categoryId: CategoryId)
 }

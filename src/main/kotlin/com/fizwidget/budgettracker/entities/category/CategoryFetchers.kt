@@ -11,11 +11,11 @@ class CategoryFetchers(
     private val service: CategoryService
 ) {
 
-    val getAll = DataFetcher<CategoriesDTO> {
+    val getAll = DataFetcher {
         service.getAll().map(Category::toDTO)
     }
 
-    val getTransactionCategory = DataFetcher<CategoryDTO> { environment ->
+    val getTransactionCategory = DataFetcher { environment ->
         val transaction: TransactionDTO = environment.getSource()
 
         transaction
@@ -26,7 +26,7 @@ class CategoryFetchers(
             ?.let(Category::toDTO)
     }
 
-    val create = DataFetcher<CreateCategoryResponseDTO> { environment ->
+    val create = DataFetcher { environment ->
         try {
             val input: CreateCategoryInputDTO = environment.parseArgument("input")
 
@@ -46,8 +46,6 @@ class CategoryFetchers(
         }
     }
 }
-
-typealias CategoriesDTO = List<CategoryDTO>
 
 data class CategoryDTO(
     val id: String,
@@ -69,4 +67,4 @@ data class CreateCategoryResponseDTO(
     override val message: String,
     override val errorType: String?,
     val category: CategoryDTO?
-): MutationResponseDTO
+) : MutationResponseDTO

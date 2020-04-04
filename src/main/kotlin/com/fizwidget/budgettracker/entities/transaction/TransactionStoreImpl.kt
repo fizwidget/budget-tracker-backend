@@ -19,9 +19,13 @@ class TransactionStoreImpl(
             mapper
         ).first()
 
-    override fun getAll(): List<Transaction> =
+    override fun getAll(filter: TransactionsFilter): List<Transaction> =
         database.query(
-            "SELECT * FROM $tableName",
+            """
+            SELECT * FROM $tableName
+            ${filter.sql}
+            """,
+            filter.variables,
             mapper
         )
 
@@ -76,6 +80,17 @@ private val mapper = RowMapper { rs: ResultSet, _: Int ->
         }
     )
 }
+
+private val TransactionsFilter.sql: String
+    get() =
+        if (categories.isEmpty())
+            ""
+        else
+            "WHERE $categoryColumn in (:categoryIds)"
+
+private val TransactionsFilter.variables: Map<String, Any>
+    get() =
+        mapOf("categoryIds" to categories.map(CategoryId::value))
 
 private const val tableName = "transaction"
 private const val idColumn = "id"

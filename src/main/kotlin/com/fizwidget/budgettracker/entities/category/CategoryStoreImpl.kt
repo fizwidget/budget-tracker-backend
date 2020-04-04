@@ -17,7 +17,7 @@ class CategoryStoreImpl(
 
         val count = database.update(
             // Note: `SET name` is needed to make sure the ID is put into the key holder.
-        """
+            """
             INSERT INTO $tableName (name) VALUES (:name)
             ON CONFLICT (name) DO UPDATE
             SET name = :name 

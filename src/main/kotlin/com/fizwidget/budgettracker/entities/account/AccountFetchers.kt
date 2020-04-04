@@ -11,17 +11,17 @@ class AccountFetchers(
     private val service: AccountService
 ) {
 
-    val getTransactionAccount = DataFetcher<AccountDTO> { environment ->
+    val getTransactionAccount = DataFetcher { environment ->
         val transaction: TransactionDTO = environment.getSource()
         val id = AccountId(transaction.accountId)
         service.get(id)?.toDTO()
     }
 
-    val getAll = DataFetcher<AccountsDTO> {
+    val getAll = DataFetcher {
         service.getAll().map(Account::toDTO)
     }
 
-    val create = DataFetcher<CreateAccountResponseDTO> { environment ->
+    val create = DataFetcher { environment ->
         try {
             val input: CreateAccountInputDTO = environment.parseArgument("input")
             val id = AccountId(input.id)
@@ -49,8 +49,6 @@ data class AccountDTO(
     val name: String
 )
 
-typealias AccountsDTO = List<AccountDTO>
-
 fun Account.toDTO(): AccountDTO =
     AccountDTO(
         id = id.value,
@@ -67,4 +65,4 @@ data class CreateAccountResponseDTO(
     override val message: String,
     override val errorType: String?,
     val account: AccountDTO?
-): MutationResponseDTO
+) : MutationResponseDTO
