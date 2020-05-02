@@ -1,1 +1,1 @@
-rootProject.name = "budgettracker"
+rootProject.name = "budget-tracker-backend"
