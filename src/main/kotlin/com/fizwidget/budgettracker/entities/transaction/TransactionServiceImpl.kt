@@ -21,7 +21,7 @@ class TransactionServiceImpl(
 
     override fun record(transactions: Csv) =
         csvReader()
-            .readAll(transactions.value)
+            .readAllWithHeader(transactions.value)
             .map(::parseTransaction)
             .let { store.record(it) }
 
@@ -29,20 +29,18 @@ class TransactionServiceImpl(
         store.categorise(transactionId, categoryId)
 }
 
-private fun parseTransaction(columns: List<String>): ParsedTransaction {
-    if (columns.size != expectedColumnCount)
-        throw InvalidTransactionsException()
-
-    val (date, account, description, credit, debit) = columns
-
+private fun parseTransaction(columns: Map<String, String>): ParsedTransaction {
     return ParsedTransaction(
-        date = LocalDate.parse(date, dateFormatter).atStartOfDay(),
-        account = AccountId(account),
-        description = description,
-        amount = parseDollars(credit) + parseDollars(debit),
-        raw = columns.joinToString()
+        date = LocalDate.parse(columns.extract("Date"), dateFormatter).atStartOfDay(),
+        account = AccountId(columns.extract("Account")),
+        description = columns.extract("Description"),
+        amount = parseDollars(columns.extract("Credit")) + parseDollars(columns.extract("Debit")),
+        raw = columns.values.joinToString(",")
     )
 }
+
+private fun Map<String, String>.extract(columnName: String): String =
+    this[columnName] ?: throw InvalidTransactionsException("Missing column: $columnName")
 
 private val dateFormatter =
     DateTimeFormatter.ofPattern("dd/MM/yyyy")
@@ -54,5 +52,3 @@ private fun parseDollars(value: String): Dollars =
         else
             value.toDouble()
     )
-
-private const val expectedColumnCount = 5
