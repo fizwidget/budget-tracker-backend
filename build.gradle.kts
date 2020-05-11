@@ -30,7 +30,6 @@ repositories {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
-    implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
     implementation("org.springframework.boot:spring-boot-starter-jdbc")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
@@ -39,6 +38,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("com.graphql-java:graphql-java-spring-boot-starter-webmvc:1.0")
     implementation("com.github.doyaaaaaken:kotlin-csv-jvm:0.7.3")
+
     runtimeOnly("org.postgresql:postgresql")
 
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
@@ -88,18 +88,27 @@ tasks.register("pushDockerImage") {
 
 val startPostgres = tasks.register<Exec>("startPostgres") {
     group = "application"
-    description = "Starts Postgres in a Docker container"
+    description = "Starts Postgres in a Docker container."
 
+    // Starts the "postgres" service defined in docker-compose.yml
     commandLine("docker-compose", "up", "-d", "postgres")
 }
 
-val stopPostgres = tasks.register<Exec>("stopPostgres") {
+tasks.register<Exec>("stopPostgres") {
     group = "application"
-    description = "Stops Postgres Docker container"
+    description = "Stops the Postgres Docker container."
 
+    // Stops the "postgres" container started by the "postgres" service (see docker-compose.yml)
     commandLine("docker", "stop", "postgres")
 }
 
+tasks.register<Exec>("startInDocker") {
+    group = "application"
+    description = "Starts the main application in Docker."
+
+    commandLine("docker-compose", "up", "springbootapp")
+}
+
 tasks.withType<BootRun> {
-    // dependsOn(startPostgres)
+    dependsOn(startPostgres)
 }
