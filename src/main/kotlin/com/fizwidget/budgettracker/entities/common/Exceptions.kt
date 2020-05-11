@@ -2,5 +2,6 @@ package com.fizwidget.budgettracker.entities.common
 
 sealed class BudgetTrackerException : Exception()
 
-class CreateException : BudgetTrackerException()
-class InvalidTransactionsException(override val message: String) : BudgetTrackerException()
+class AccountCreationException : BudgetTrackerException()
+class CategoryCreationException : BudgetTrackerException()
+class TransactionCreationException(override val message: String) : BudgetTrackerException()

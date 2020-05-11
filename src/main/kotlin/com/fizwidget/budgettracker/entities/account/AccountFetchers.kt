@@ -1,6 +1,8 @@
 package com.fizwidget.budgettracker.entities.account
 
 import com.fizwidget.budgettracker.entities.common.MutationResponseDTO
+import com.fizwidget.budgettracker.entities.common.graphQLErrorMessage
+import com.fizwidget.budgettracker.entities.common.graphQLErrorType
 import com.fizwidget.budgettracker.entities.common.parseArgument
 import com.fizwidget.budgettracker.entities.transaction.TransactionDTO
 import graphql.schema.DataFetcher
@@ -36,8 +38,8 @@ class AccountFetchers(
         } catch (exception: Exception) {
             CreateAccountResponseDTO(
                 success = false,
-                message = exception.message ?: "Unknown error",
-                errorType = "UNKNOWN",
+                message = exception.graphQLErrorMessage,
+                errorType = exception.graphQLErrorType,
                 account = null
             )
         }

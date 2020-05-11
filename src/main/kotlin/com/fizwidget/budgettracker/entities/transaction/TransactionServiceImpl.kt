@@ -2,7 +2,7 @@ package com.fizwidget.budgettracker.entities.transaction
 
 import com.fizwidget.budgettracker.entities.account.AccountId
 import com.fizwidget.budgettracker.entities.category.CategoryId
-import com.fizwidget.budgettracker.entities.common.InvalidTransactionsException
+import com.fizwidget.budgettracker.entities.common.TransactionCreationException
 import com.github.doyaaaaaken.kotlincsv.dsl.csvReader
 import org.springframework.stereotype.Service
 import java.time.LocalDate
@@ -40,7 +40,7 @@ private fun parseTransaction(columns: Map<String, String>): ParsedTransaction {
 }
 
 private fun Map<String, String>.extract(columnName: String): String =
-    this[columnName] ?: throw InvalidTransactionsException("Missing column: $columnName")
+    this[columnName] ?: throw TransactionCreationException("Missing column: $columnName")
 
 private val dateFormatter =
     DateTimeFormatter.ofPattern("dd/MM/yyyy")

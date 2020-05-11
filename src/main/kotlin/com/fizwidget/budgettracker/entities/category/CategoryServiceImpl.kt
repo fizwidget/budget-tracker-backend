@@ -1,6 +1,6 @@
 package com.fizwidget.budgettracker.entities.category
 
-import com.fizwidget.budgettracker.entities.common.CreateException
+import com.fizwidget.budgettracker.entities.common.CategoryCreationException
 import org.springframework.stereotype.Service
 
 @Service
@@ -12,7 +12,7 @@ class CategoryServiceImpl(
             if (id != null)
                 Category(id, name)
             else
-                throw CreateException()
+                throw CategoryCreationException()
         }
 
     override fun get(id: CategoryId): Category? =

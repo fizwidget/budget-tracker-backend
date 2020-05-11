@@ -2,6 +2,8 @@ package com.fizwidget.budgettracker.entities.transaction
 
 import com.fizwidget.budgettracker.entities.category.CategoryId
 import com.fizwidget.budgettracker.entities.common.MutationResponseDTO
+import com.fizwidget.budgettracker.entities.common.graphQLErrorMessage
+import com.fizwidget.budgettracker.entities.common.graphQLErrorType
 import com.fizwidget.budgettracker.entities.common.parseArgument
 import graphql.schema.DataFetcher
 import org.springframework.stereotype.Component
@@ -33,8 +35,8 @@ class TransactionFetchers(
         } catch (exception: Exception) {
             RecordTransactionsResponseDTO(
                 success = false,
-                message = exception.message ?: "Unknown error",
-                errorType = "UNKNOWN",
+                message = exception.graphQLErrorMessage,
+                errorType = exception.graphQLErrorType,
                 transactions = null
             )
         }
@@ -57,8 +59,8 @@ class TransactionFetchers(
         } catch (exception: Exception) {
             CategoriseTransactionResponseDTO(
                 success = false,
-                message = exception.message ?: "Unknown error",
-                errorType = "UNKNOWN",
+                message = exception.graphQLErrorMessage,
+                errorType = exception.graphQLErrorType,
                 transaction = null
             )
         }

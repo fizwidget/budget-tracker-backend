@@ -1,6 +1,6 @@
 package com.fizwidget.budgettracker.entities.account
 
-import com.fizwidget.budgettracker.entities.common.CreateException
+import com.fizwidget.budgettracker.entities.common.AccountCreationException
 import org.springframework.stereotype.Service
 
 @Service
@@ -12,7 +12,7 @@ class AccountServiceImpl(
             if (success)
                 Account(id, name)
             else
-                throw CreateException()
+                throw AccountCreationException()
         }
 
     override fun get(id: AccountId): Account? =
