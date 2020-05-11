@@ -103,6 +103,8 @@ tasks.register<Exec>("stopPostgres") {
 }
 
 tasks.register<Exec>("startInDocker") {
+    dependsOn(buildDockerImage)
+
     group = "application"
     description = "Starts the main application in Docker."
 
