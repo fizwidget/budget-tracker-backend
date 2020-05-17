@@ -111,6 +111,13 @@ tasks.register<Exec>("startInDocker") {
     commandLine("docker-compose", "up", "springbootapp")
 }
 
+tasks.register<Exec>("stopInDocker") {
+    group = "application"
+    description = "Stops the main application in Docker."
+
+    commandLine("docker-compose", "down", "springbootapp")
+}
+
 tasks.withType<BootRun> {
     dependsOn(startPostgres)
 }
