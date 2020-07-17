@@ -12,6 +12,7 @@ val Exception.graphQLErrorType: String
             is BudgetTrackerException ->
                 when (this) {
                     is AccountCreationException -> "ACCOUNT_CREATION_ERROR"
+                    is AccountDoesNotExistException -> "ACCOUNT_DOES_NOT_EXIST_ERROR"
                     is CategoryCreationException -> "CATEGORY_CREATION_ERROR"
                     is TransactionCreationException -> "TRANSACTION_CREATION_ERROR"
                 }

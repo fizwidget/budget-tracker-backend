@@ -2,6 +2,8 @@ package com.fizwidget.budgettracker.entities.transaction
 
 import com.fizwidget.budgettracker.entities.account.AccountId
 import com.fizwidget.budgettracker.entities.category.CategoryId
+import com.fizwidget.budgettracker.entities.common.AccountDoesNotExistException
+import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Component
@@ -30,24 +32,32 @@ class TransactionStoreImpl(
         )
 
     override fun record(transactions: List<ParsedTransaction>) {
-        database.batchUpdate(
-            """
+        try {
+            database.batchUpdate(
+                """
             INSERT INTO $tableName ($accountColumn, $dateColumn, $amountColumn, $descriptionColumn, $rawColumn)
             VALUES (:account, :date, :amount, :description, :raw)
             ON CONFLICT DO NOTHING
             """,
-            transactions
-                .map {
-                    mapOf(
-                        "account" to it.account.value,
-                        "date" to it.date,
-                        "amount" to it.amount.value,
-                        "description" to it.description,
-                        "raw" to it.raw
-                    )
-                }
-                .toTypedArray()
-        )
+                transactions
+                    .map {
+                        mapOf(
+                            "account" to it.account.value,
+                            "date" to it.date,
+                            "amount" to it.amount.value,
+                            "description" to it.description,
+                            "raw" to it.raw
+                        )
+                    }
+                    .toTypedArray()
+            )
+        } catch (exception: DataIntegrityViolationException) {
+            if (exception.message?.contains("transaction_account_fkey") == true) {
+                throw AccountDoesNotExistException()
+            } else {
+                throw exception
+            }
+        }
     }
 
     override fun categorise(transactionId: TransactionId, categoryId: CategoryId) {
