@@ -1,5 +1,7 @@
 package com.fizwidget.budgettracker.entities.account
 
+import com.fizwidget.budgettracker.entities.common.AccountCreationException
+import org.springframework.dao.DuplicateKeyException
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Component
@@ -10,18 +12,26 @@ class AccountStoreImpl(
     private val database: NamedParameterJdbcTemplate
 ) : AccountStore {
 
-    override fun create(id: AccountId, name: String): Boolean =
-        database.update(
-            """
+    override fun create(id: AccountId, name: String) {
+        try {
+            val count = database.update(
+                """
             INSERT INTO $tableName VALUES (:id, :name)
             ON CONFLICT (id)
             DO UPDATE SET name = :name
             """,
-            mapOf(
-                "id" to id.value,
-                "name" to name
+                mapOf(
+                    "id" to id.value,
+                    "name" to name
+                )
             )
-        ).let { count -> count == 1 }
+            if (count != 1) {
+                throw AccountCreationException("Unable to create account.")
+            }
+        } catch (exception: DuplicateKeyException) {
+            throw AccountCreationException("Account with name '$name' already exists.")
+        }
+    }
 
     override fun getByIds(ids: List<AccountId>): List<Account> =
         database.query(

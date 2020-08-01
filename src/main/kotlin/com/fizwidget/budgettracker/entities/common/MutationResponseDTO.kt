@@ -21,4 +21,13 @@ val Exception.graphQLErrorType: String
 
 val Exception.graphQLErrorMessage: String
     get() =
-        this.message ?: "Unknown error"
+        when (this) {
+            is BudgetTrackerException ->
+                when (this) {
+                    is AccountCreationException -> message
+                    is AccountDoesNotExistException -> "Account does not exist."
+                    is CategoryCreationException -> "Error creating category."
+                    is TransactionCreationException -> message
+                }
+            else -> "Unknown error."
+        }

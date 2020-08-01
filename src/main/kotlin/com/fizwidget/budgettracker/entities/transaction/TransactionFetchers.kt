@@ -30,6 +30,7 @@ class TransactionFetchers(
                 success = true,
                 message = "Transactions recorded",
                 errorType = null,
+                // TODO: Only return the newly created transactions
                 transactions = service.getAll().map(Transaction::toDTO)
             )
         } catch (exception: Exception) {
