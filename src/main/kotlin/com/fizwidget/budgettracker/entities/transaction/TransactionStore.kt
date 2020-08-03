@@ -8,7 +8,7 @@ interface TransactionStore {
     fun get(id: TransactionId): Transaction
     fun getAll(filter: TransactionsFilter): List<Transaction>
     fun record(transactions: List<ParsedTransaction>)
-    fun categorise(transactionId: TransactionId, categoryId: CategoryId)
+    fun categorise(transactionId: TransactionId, categoryId: CategoryId?)
 }
 
 data class ParsedTransaction(

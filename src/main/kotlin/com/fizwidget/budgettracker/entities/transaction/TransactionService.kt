@@ -6,7 +6,7 @@ interface TransactionService {
     fun get(id: TransactionId): Transaction
     fun getAll(filter: TransactionsFilter = defaultFilter): List<Transaction>
     fun record(transactions: Csv)
-    fun categorise(transactionId: TransactionId, categoryId: CategoryId)
+    fun categorise(transactionId: TransactionId, categoryId: CategoryId?)
 }
 
 val defaultFilter = TransactionsFilter(

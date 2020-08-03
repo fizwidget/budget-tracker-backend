@@ -25,7 +25,7 @@ class TransactionServiceImpl(
             .map(::parseTransaction)
             .let { store.record(it) }
 
-    override fun categorise(transactionId: TransactionId, categoryId: CategoryId) =
+    override fun categorise(transactionId: TransactionId, categoryId: CategoryId?) =
         store.categorise(transactionId, categoryId)
 }
 

@@ -60,7 +60,7 @@ class TransactionStoreImpl(
         }
     }
 
-    override fun categorise(transactionId: TransactionId, categoryId: CategoryId) {
+    override fun categorise(transactionId: TransactionId, categoryId: CategoryId?) {
         database.update(
             """
             UPDATE $tableName
@@ -68,7 +68,7 @@ class TransactionStoreImpl(
             WHERE $idColumn = :transactionId
             """,
             mapOf(
-                "categoryId" to categoryId.value,
+                "categoryId" to categoryId?.value,
                 "transactionId" to transactionId.value
             )
         )

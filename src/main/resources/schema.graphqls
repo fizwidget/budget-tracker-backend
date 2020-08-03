@@ -210,9 +210,9 @@ input CategoriseTransactionInput {
     """
     transactionId: ID!
     """
-    The category to put the transaction into.
+    The category to put the transaction into (`null` to uncategorise).
     """
-    categoryId: ID!
+    categoryId: ID
 }
 
 type CategoriseTransactionResponse implements MutationResponse {

@@ -47,7 +47,7 @@ class TransactionFetchers(
         try {
             val input: CategoriseTransactionInputDTO = environment.parseArgument("input")
             val transactionId = TransactionId(input.transactionId.toInt())
-            val categoryId = CategoryId(input.categoryId.toInt())
+            val categoryId = input.categoryId?.let { CategoryId(it.toInt()) }
 
             service.categorise(transactionId, categoryId)
 
@@ -122,7 +122,7 @@ data class RecordTransactionsResponseDTO(
 
 data class CategoriseTransactionInputDTO(
     val transactionId: String,
-    val categoryId: String
+    val categoryId: String?
 )
 
 data class CategoriseTransactionResponseDTO(
