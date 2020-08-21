@@ -1,5 +1,6 @@
 package com.fizwidget.budgettracker.entities.category
 
+import com.fizwidget.budgettracker.entities.common.CategoryId
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate

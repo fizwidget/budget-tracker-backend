@@ -1,5 +1,6 @@
 package com.fizwidget.budgettracker.entities.account
 
+import com.fizwidget.budgettracker.entities.common.AccountId
 import org.springframework.stereotype.Service
 
 @Service

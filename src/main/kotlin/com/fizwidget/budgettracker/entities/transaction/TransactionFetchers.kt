@@ -1,10 +1,13 @@
 package com.fizwidget.budgettracker.entities.transaction
 
-import com.fizwidget.budgettracker.entities.category.CategoryId
+import com.fizwidget.budgettracker.entities.common.CategoryId
 import com.fizwidget.budgettracker.entities.common.MutationResponseDTO
+import com.fizwidget.budgettracker.entities.common.NodeDTO
+import com.fizwidget.budgettracker.entities.common.TransactionId
 import com.fizwidget.budgettracker.entities.common.graphQLErrorMessage
 import com.fizwidget.budgettracker.entities.common.graphQLErrorType
 import com.fizwidget.budgettracker.entities.common.parseArgument
+import com.fizwidget.budgettracker.entities.common.toEntityId
 import graphql.schema.DataFetcher
 import org.springframework.stereotype.Component
 import java.time.LocalDateTime
@@ -46,8 +49,8 @@ class TransactionFetchers(
     val categorise = DataFetcher { environment ->
         try {
             val input: CategoriseTransactionInputDTO = environment.parseArgument("input")
-            val transactionId = TransactionId(input.transactionId.toInt())
-            val categoryId = input.categoryId?.let { CategoryId(it.toInt()) }
+            val transactionId = TransactionId.fromEntityId(input.transactionId)
+            val categoryId = input.categoryId?.let((CategoryId)::fromEntityId)
 
             service.categorise(transactionId, categoryId)
 
@@ -91,22 +94,22 @@ data class TimeRangeInputDTO(
 typealias TransactionsDTO = List<TransactionDTO>
 
 data class TransactionDTO(
-    val id: String,
+    override val id: String,
     val date: String,
     val description: String,
     val amount: Double,
     val accountId: String,
     val categoryId: String?
-)
+): NodeDTO
 
-private fun Transaction.toDTO(): TransactionDTO =
+fun Transaction.toDTO(): TransactionDTO =
     TransactionDTO(
-        id = id.value.toString(),
+        id = id.toEntityId(),
         date = date.toString(),
         description = description,
         amount = amount.value,
-        accountId = account.value,
-        categoryId = category?.value?.toString()
+        accountId = account.toEntityId(),
+        categoryId = category?.toEntityId()
     )
 
 data class RecordTransactionsInputDTO(

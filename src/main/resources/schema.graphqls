@@ -1,4 +1,16 @@
+interface Node {
+    """
+    Globally unique object identifier.
+    """
+    id: ID!
+}
+
 type Query {
+    """
+    Retrieve any object by its ID.
+    """
+    node(id: ID!): Node
+
     """
     List transactions with an optional filter.
     """
@@ -44,7 +56,7 @@ input TimeRangeInput {
     endDate: String
 }
 
-type Transaction {
+type Transaction implements Node {
     """
     Opaque identifier.
     """
@@ -80,7 +92,7 @@ type Transaction {
     category: Category
 }
 
-type Category {
+type Category implements Node {
     """
     Opaque identifier.
     """
@@ -92,7 +104,7 @@ type Category {
     name: String!
 }
 
-type Account {
+type Account implements Node {
     """
     Opaque identifier.
     """
@@ -108,27 +120,27 @@ type Mutation {
     """
     Create an account that transactions occur in.
     """
-    createAccount(input: CreateAccountInput!): CreateAccountResponse
+    createAccount(input: CreateAccountInput!): CreateAccountPayload
 
     """
     Create a category that transactions can be organised into.
     """
-    createCategory(input: CreateCategoryInput!): CreateCategoryResponse
+    createCategory(input: CreateCategoryInput!): CreateCategoryPayload
 
     """
     Record a series of transactions.
 
     Transactions that have already been recorded will be ignored.
     """
-    recordTransactions(input: RecordTransactionsInput!): RecordTransactionsResponse
+    recordTransactions(input: RecordTransactionsInput!): RecordTransactionsPayload
 
     """
     Categorise a transaction.
     """
-    categoriseTransaction(input: CategoriseTransactionInput!): CategoriseTransactionResponse
+    categoriseTransaction(input: CategoriseTransactionInput!): CategoriseTransactionPayload
 }
 
-interface MutationResponse {
+interface MutationPayload {
     """
     True of the mutation succeeded, false if it failed.
     """
@@ -157,7 +169,7 @@ input CreateAccountInput {
     name: String!
 }
 
-type CreateAccountResponse implements MutationResponse {
+type CreateAccountPayload implements MutationPayload {
     success: Boolean!
     message: String!
     errorType: String
@@ -175,7 +187,7 @@ input CreateCategoryInput {
     name: String!
 }
 
-type CreateCategoryResponse implements MutationResponse {
+type CreateCategoryPayload implements MutationPayload {
     success: Boolean!
     message: String!
     errorType: String
@@ -193,7 +205,7 @@ input RecordTransactionsInput {
     csv: String!
 }
 
-type RecordTransactionsResponse implements MutationResponse {
+type RecordTransactionsPayload implements MutationPayload {
     success: Boolean!
     message: String!
     errorType: String
@@ -215,7 +227,7 @@ input CategoriseTransactionInput {
     categoryId: ID
 }
 
-type CategoriseTransactionResponse implements MutationResponse {
+type CategoriseTransactionPayload implements MutationPayload {
     success: Boolean!
     message: String!
     errorType: String

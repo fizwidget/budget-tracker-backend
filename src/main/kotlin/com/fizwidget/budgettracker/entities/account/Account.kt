@@ -1,6 +1,6 @@
 package com.fizwidget.budgettracker.entities.account
 
-data class AccountId(val value: String)
+import com.fizwidget.budgettracker.entities.common.AccountId
 
 data class Account(
     val id: AccountId,

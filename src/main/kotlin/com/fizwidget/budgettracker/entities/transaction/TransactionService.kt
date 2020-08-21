@@ -1,6 +1,7 @@
 package com.fizwidget.budgettracker.entities.transaction
 
-import com.fizwidget.budgettracker.entities.category.CategoryId
+import com.fizwidget.budgettracker.entities.common.CategoryId
+import com.fizwidget.budgettracker.entities.common.TransactionId
 
 interface TransactionService {
     fun get(id: TransactionId): Transaction

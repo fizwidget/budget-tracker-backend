@@ -1,9 +1,12 @@
 package com.fizwidget.budgettracker.entities.category
 
+import com.fizwidget.budgettracker.entities.common.CategoryId
 import com.fizwidget.budgettracker.entities.common.MutationResponseDTO
+import com.fizwidget.budgettracker.entities.common.NodeDTO
 import com.fizwidget.budgettracker.entities.common.graphQLErrorMessage
 import com.fizwidget.budgettracker.entities.common.graphQLErrorType
 import com.fizwidget.budgettracker.entities.common.parseArgument
+import com.fizwidget.budgettracker.entities.common.toEntityId
 import com.fizwidget.budgettracker.entities.transaction.TransactionDTO
 import graphql.schema.DataFetcher
 import org.springframework.stereotype.Component
@@ -22,8 +25,7 @@ class CategoryFetchers(
 
         transaction
             .categoryId
-            ?.toInt()
-            ?.let(::CategoryId)
+            ?.let((CategoryId)::fromEntityId)
             ?.let(service::get)
             ?.let(Category::toDTO)
     }
@@ -50,13 +52,13 @@ class CategoryFetchers(
 }
 
 data class CategoryDTO(
-    val id: String,
+    override val id: String,
     val name: String
-)
+): NodeDTO
 
-private fun Category.toDTO(): CategoryDTO =
+fun Category.toDTO(): CategoryDTO =
     CategoryDTO(
-        id.value.toString(),
+        id.toEntityId(),
         name
     )
 

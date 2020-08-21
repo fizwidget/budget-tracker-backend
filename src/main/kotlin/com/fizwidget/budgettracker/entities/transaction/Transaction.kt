@@ -1,11 +1,11 @@
 package com.fizwidget.budgettracker.entities.transaction
 
-import com.fizwidget.budgettracker.entities.account.AccountId
-import com.fizwidget.budgettracker.entities.category.CategoryId
+import com.fizwidget.budgettracker.entities.common.AccountId
+import com.fizwidget.budgettracker.entities.common.CategoryId
+import com.fizwidget.budgettracker.entities.common.TransactionId
 import java.time.LocalDateTime
 import java.util.Date
 
-data class TransactionId(val value: Int)
 data class Dollars(val value: Double)
 
 operator fun Dollars.plus(other: Dollars): Dollars =

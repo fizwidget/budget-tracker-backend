@@ -1,8 +1,12 @@
 package com.fizwidget.budgettracker
 
+import com.fizwidget.budgettracker.entities.account.AccountDTO
 import com.fizwidget.budgettracker.entities.account.AccountFetchers
+import com.fizwidget.budgettracker.entities.category.CategoryDTO
 import com.fizwidget.budgettracker.entities.category.CategoryFetchers
+import com.fizwidget.budgettracker.entities.node.NodeFetcher
 import com.fizwidget.budgettracker.entities.statistics.StatisticsFetchers
+import com.fizwidget.budgettracker.entities.transaction.TransactionDTO
 import com.fizwidget.budgettracker.entities.transaction.TransactionFetchers
 import graphql.GraphQL
 import graphql.schema.GraphQLSchema
@@ -15,9 +19,11 @@ import org.springframework.core.io.ClassPathResource
 import org.springframework.stereotype.Component
 import org.springframework.util.FileCopyUtils
 import java.nio.charset.StandardCharsets
+import kotlin.Exception
 
 @Component
 class GraphQLProvider(
+    private val nodeFetcher: NodeFetcher,
     private val transactionFetchers: TransactionFetchers,
     private val categoryFetchers: CategoryFetchers,
     private val accountFetchers: AccountFetchers,
@@ -44,6 +50,7 @@ class GraphQLProvider(
             .newRuntimeWiring()
             .type(
                 newTypeWiring("Query")
+                    .dataFetcher("node", nodeFetcher.get)
                     .dataFetcher("transactions", transactionFetchers.getAll)
                     .dataFetcher("categories", categoryFetchers.getAll)
                     .dataFetcher("accounts", accountFetchers.getAll)
@@ -55,9 +62,17 @@ class GraphQLProvider(
                     .dataFetcher("category", categoryFetchers.getTransactionCategory)
             )
             .type(
-                newTypeWiring("MutationResponse")
+                newTypeWiring("MutationPayload")
                     .typeResolver { environment ->
-                        environment.schema.getObjectType("MutationResponse")
+                        environment.schema.getObjectType("MutationPayload")
+                    }
+            )
+            .type(
+                newTypeWiring("Node")
+                    .typeResolver { environment ->
+                        environment.getObject<Any>()
+                            .let(::getGraphQLTypeName)
+                            .let(environment.schema::getObjectType)
                     }
             )
             .type(
@@ -69,6 +84,14 @@ class GraphQLProvider(
             )
             .build()
 }
+
+private fun getGraphQLTypeName(entity: Any): String =
+    when (entity) {
+        is AccountDTO -> "Account"
+        is CategoryDTO -> "Category"
+        is TransactionDTO -> "Transaction"
+        else -> throw Exception("Unrecognised entity type: $entity")
+    }
 
 private fun loadResource(path: String): String =
     ClassPathResource(path)
