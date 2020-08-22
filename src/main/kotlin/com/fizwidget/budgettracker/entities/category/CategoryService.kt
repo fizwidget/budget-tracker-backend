@@ -1,6 +1,6 @@
 package com.fizwidget.budgettracker.entities.category
 
-import com.fizwidget.budgettracker.entities.common.CategoryId
+import com.fizwidget.budgettracker.common.CategoryId
 
 interface CategoryService {
     fun create(name: String): Category

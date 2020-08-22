@@ -1,4 +1,4 @@
-package com.fizwidget.budgettracker.entities.common
+package com.fizwidget.budgettracker.common
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import graphql.schema.DataFetchingEnvironment

@@ -1,4 +1,4 @@
-package com.fizwidget.budgettracker.entities.common
+package com.fizwidget.budgettracker.common
 
 interface MutationResponseDTO {
     val success: Boolean

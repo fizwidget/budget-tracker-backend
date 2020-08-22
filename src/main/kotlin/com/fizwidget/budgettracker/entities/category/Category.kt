@@ -1,6 +1,6 @@
 package com.fizwidget.budgettracker.entities.category
 
-import com.fizwidget.budgettracker.entities.common.CategoryId
+import com.fizwidget.budgettracker.common.CategoryId
 
 data class Category(
     val id: CategoryId,

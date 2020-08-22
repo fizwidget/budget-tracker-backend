@@ -4,7 +4,7 @@ import com.fizwidget.budgettracker.entities.account.AccountDTO
 import com.fizwidget.budgettracker.entities.account.AccountFetchers
 import com.fizwidget.budgettracker.entities.category.CategoryDTO
 import com.fizwidget.budgettracker.entities.category.CategoryFetchers
-import com.fizwidget.budgettracker.entities.common.NodeDTO
+import com.fizwidget.budgettracker.common.NodeDTO
 import com.fizwidget.budgettracker.entities.node.NodeFetcher
 import com.fizwidget.budgettracker.entities.statistics.StatisticsFetchers
 import com.fizwidget.budgettracker.entities.transaction.TransactionDTO

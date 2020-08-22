@@ -1,12 +1,12 @@
 package com.fizwidget.budgettracker.entities.account
 
-import com.fizwidget.budgettracker.entities.common.AccountId
-import com.fizwidget.budgettracker.entities.common.MutationResponseDTO
-import com.fizwidget.budgettracker.entities.common.NodeDTO
-import com.fizwidget.budgettracker.entities.common.graphQLErrorMessage
-import com.fizwidget.budgettracker.entities.common.graphQLErrorType
-import com.fizwidget.budgettracker.entities.common.parseArgument
-import com.fizwidget.budgettracker.entities.common.toEntityId
+import com.fizwidget.budgettracker.common.AccountId
+import com.fizwidget.budgettracker.common.MutationResponseDTO
+import com.fizwidget.budgettracker.common.NodeDTO
+import com.fizwidget.budgettracker.common.graphQLErrorMessage
+import com.fizwidget.budgettracker.common.graphQLErrorType
+import com.fizwidget.budgettracker.common.parseArgument
+import com.fizwidget.budgettracker.common.toEntityId
 import com.fizwidget.budgettracker.entities.transaction.TransactionDTO
 import graphql.schema.DataFetcher
 import org.springframework.stereotype.Component

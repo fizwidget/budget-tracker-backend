@@ -1,6 +1,6 @@
 package com.fizwidget.budgettracker.entities.account
 
-import com.fizwidget.budgettracker.entities.common.AccountId
+import com.fizwidget.budgettracker.common.AccountId
 
 interface AccountStore {
     fun create(id: AccountId, name: String)
