@@ -4,6 +4,3 @@ spring:
     driver-class-name: org.postgresql.Driver
     username: postgres
     password: admin
-  jpa:
-    properties.hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
-    hibernate.ddl-adockeuto: none
