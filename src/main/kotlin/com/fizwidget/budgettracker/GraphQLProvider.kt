@@ -4,6 +4,7 @@ import com.fizwidget.budgettracker.entities.account.AccountDTO
 import com.fizwidget.budgettracker.entities.account.AccountFetchers
 import com.fizwidget.budgettracker.entities.category.CategoryDTO
 import com.fizwidget.budgettracker.entities.category.CategoryFetchers
+import com.fizwidget.budgettracker.entities.common.NodeDTO
 import com.fizwidget.budgettracker.entities.node.NodeFetcher
 import com.fizwidget.budgettracker.entities.statistics.StatisticsFetchers
 import com.fizwidget.budgettracker.entities.transaction.TransactionDTO
@@ -70,8 +71,7 @@ class GraphQLProvider(
             .type(
                 newTypeWiring("Node")
                     .typeResolver { environment ->
-                        environment.getObject<Any>()
-                            .let(::getGraphQLTypeName)
+                        getGraphQLTypeName(environment.getObject())
                             .let(environment.schema::getObjectType)
                     }
             )
@@ -85,7 +85,7 @@ class GraphQLProvider(
             .build()
 }
 
-private fun getGraphQLTypeName(entity: Any): String =
+private fun getGraphQLTypeName(entity: NodeDTO): String =
     when (entity) {
         is AccountDTO -> "Account"
         is CategoryDTO -> "Category"
