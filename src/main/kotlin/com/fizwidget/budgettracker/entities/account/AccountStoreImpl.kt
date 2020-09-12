@@ -12,15 +12,14 @@ import java.sql.ResultSet
 class AccountStoreImpl(
     private val database: NamedParameterJdbcTemplate
 ) : AccountStore {
-
     override fun create(id: AccountId, name: String) {
         try {
             val count = database.update(
                 """
-            INSERT INTO $tableName VALUES (:id, :name)
-            ON CONFLICT (id)
-            DO UPDATE SET name = :name
-            """,
+                INSERT INTO $tableName VALUES (:id, :name)
+                ON CONFLICT (id)
+                DO UPDATE SET name = :name
+                """,
                 mapOf(
                     "id" to id.value,
                     "name" to name

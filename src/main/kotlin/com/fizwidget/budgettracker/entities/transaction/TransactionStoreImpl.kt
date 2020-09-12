@@ -14,7 +14,6 @@ import java.sql.ResultSet
 class TransactionStoreImpl(
     val database: NamedParameterJdbcTemplate
 ) : TransactionStore {
-
     override fun get(id: TransactionId): Transaction =
         database.query(
             "SELECT * FROM $tableName WHERE $idColumn = :id",
@@ -36,10 +35,10 @@ class TransactionStoreImpl(
         try {
             database.batchUpdate(
                 """
-            INSERT INTO $tableName ($accountColumn, $dateColumn, $amountColumn, $descriptionColumn, $rawColumn)
-            VALUES (:account, :date, :amount, :description, :raw)
-            ON CONFLICT DO NOTHING
-            """,
+                INSERT INTO $tableName ($accountColumn, $dateColumn, $amountColumn, $descriptionColumn, $rawColumn)
+                VALUES (:account, :date, :amount, :description, :raw)
+                ON CONFLICT DO NOTHING
+                """,
                 transactions
                     .map {
                         mapOf(

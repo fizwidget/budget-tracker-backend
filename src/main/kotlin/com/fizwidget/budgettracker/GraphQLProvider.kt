@@ -30,7 +30,6 @@ class GraphQLProvider(
     private val accountFetchers: AccountFetchers,
     private val statisticsFetchers: StatisticsFetchers
 ) {
-
     private val graphQL: GraphQL =
         loadResource("/schema.graphqls")
             .let(::buildSchema)

@@ -12,7 +12,6 @@ import java.sql.ResultSet
 class CategoryStoreImpl(
     private val database: NamedParameterJdbcTemplate
 ) : CategoryStore {
-
     override fun create(name: String): CategoryId? {
         val keyHolder = GeneratedKeyHolder()
 

@@ -3,10 +3,11 @@ package com.fizwidget.budgettracker.entities.account
 import com.fizwidget.budgettracker.common.AccountId
 import com.fizwidget.budgettracker.common.MutationResponseDTO
 import com.fizwidget.budgettracker.common.NodeDTO
+import com.fizwidget.budgettracker.common.decodeAccountId
+import com.fizwidget.budgettracker.common.encode
 import com.fizwidget.budgettracker.common.graphQLErrorMessage
 import com.fizwidget.budgettracker.common.graphQLErrorType
 import com.fizwidget.budgettracker.common.parseArgument
-import com.fizwidget.budgettracker.common.toEntityId
 import com.fizwidget.budgettracker.entities.transaction.TransactionDTO
 import graphql.schema.DataFetcher
 import org.springframework.stereotype.Component
@@ -15,10 +16,9 @@ import org.springframework.stereotype.Component
 class AccountFetchers(
     private val service: AccountService
 ) {
-
     val getTransactionAccount = DataFetcher { environment ->
         val transaction: TransactionDTO = environment.getSource()
-        val id = AccountId.fromEntityId(transaction.accountId)
+        val id = decodeAccountId(transaction.accountId)
         service.get(id)?.toDTO()
     }
 
@@ -56,7 +56,7 @@ data class AccountDTO(
 
 fun Account.toDTO(): AccountDTO =
     AccountDTO(
-        id = id.toEntityId(),
+        id = id.encode(),
         name = name
     )
 

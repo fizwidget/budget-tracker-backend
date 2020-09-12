@@ -3,11 +3,12 @@ package com.fizwidget.budgettracker.entities.transaction
 import com.fizwidget.budgettracker.common.CategoryId
 import com.fizwidget.budgettracker.common.MutationResponseDTO
 import com.fizwidget.budgettracker.common.NodeDTO
-import com.fizwidget.budgettracker.common.TransactionId
+import com.fizwidget.budgettracker.common.decodeCategoryId
+import com.fizwidget.budgettracker.common.decodeTransactionId
+import com.fizwidget.budgettracker.common.encode
 import com.fizwidget.budgettracker.common.graphQLErrorMessage
 import com.fizwidget.budgettracker.common.graphQLErrorType
 import com.fizwidget.budgettracker.common.parseArgument
-import com.fizwidget.budgettracker.common.toEntityId
 import graphql.schema.DataFetcher
 import org.springframework.stereotype.Component
 import java.time.LocalDateTime
@@ -17,7 +18,6 @@ import java.time.format.DateTimeFormatter
 class TransactionFetchers(
     private val service: TransactionService
 ) {
-
     val getAll = DataFetcher { environment ->
         val filter: TransactionsFilterInputDTO = environment.parseArgument("filter")
         service.getAll(filter.fromDTO()).map(Transaction::toDTO)
@@ -49,8 +49,8 @@ class TransactionFetchers(
     val categorise = DataFetcher { environment ->
         try {
             val input: CategoriseTransactionInputDTO = environment.parseArgument("input")
-            val transactionId = TransactionId.fromEntityId(input.transactionId)
-            val categoryId = input.categoryId?.let((CategoryId)::fromEntityId)
+            val transactionId = decodeTransactionId(input.transactionId)
+            val categoryId = input.categoryId?.let(::decodeCategoryId)
 
             service.categorise(transactionId, categoryId)
 
@@ -104,12 +104,12 @@ data class TransactionDTO(
 
 fun Transaction.toDTO(): TransactionDTO =
     TransactionDTO(
-        id = id.toEntityId(),
+        id = id.encode(),
         date = date.toString(),
         description = description,
         amount = amount.value,
-        accountId = account.toEntityId(),
-        categoryId = category?.toEntityId()
+        accountId = account.encode(),
+        categoryId = category?.encode()
     )
 
 data class RecordTransactionsInputDTO(
