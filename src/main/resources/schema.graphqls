@@ -32,6 +32,8 @@ type Query {
     savingsRate(timeRange: TimeRangeInput): Float
 }
 
+# Connection!!!
+
 input TransactionsFilterInput {
     """
     Filter by categories.
@@ -49,25 +51,20 @@ input TimeRangeInput {
     """
     Start date for the time period (inclusive).
     """
-    startDate: String
+    startDate: DateTime
     """
     End date for the time period (inclusive).
     """
-    endDate: String
+    endDate: DateTime
 }
 
 type Transaction implements Node {
-    """
-    Opaque identifier.
-    """
     id: ID!,
 
     """
     Date the transaction occured on (including timezone offset).
-
-    TODO: Specify exact format.
     """
-    date: String!
+    date: DateTime!
 
     """
     Description of the transaction, as per the bank record.
@@ -93,9 +90,6 @@ type Transaction implements Node {
 }
 
 type Category implements Node {
-    """
-    Opaque identifier.
-    """
     id: ID!,
 
     """
@@ -105,9 +99,6 @@ type Category implements Node {
 }
 
 type Account implements Node {
-    """
-    Opaque identifier.
-    """
     id: ID!,
 
     """
@@ -237,3 +228,8 @@ type CategoriseTransactionPayload implements MutationPayload {
     """
     transaction: Transaction
 }
+
+"""
+RFC-3339 compliant date time value.
+"""
+scalar DateTime

@@ -37,6 +37,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("com.graphql-java:graphql-java-spring-boot-starter-webmvc:1.0")
+    implementation("com.graphql-java:graphql-java-extended-scalars:1.0")
     implementation("com.github.doyaaaaaken:kotlin-csv-jvm:0.7.3")
 
     runtimeOnly("org.postgresql:postgresql")

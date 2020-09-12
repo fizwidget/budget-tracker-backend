@@ -3,7 +3,7 @@ package com.fizwidget.budgettracker.entities.transaction
 import com.fizwidget.budgettracker.common.AccountId
 import com.fizwidget.budgettracker.common.CategoryId
 import com.fizwidget.budgettracker.common.TransactionId
-import java.time.LocalDateTime
+import java.time.OffsetDateTime
 
 interface TransactionStore {
     fun get(id: TransactionId): Transaction
@@ -13,7 +13,7 @@ interface TransactionStore {
 }
 
 data class ParsedTransaction(
-    val date: LocalDateTime,
+    val date: OffsetDateTime,
     val account: AccountId,
     val description: String,
     val amount: Dollars,

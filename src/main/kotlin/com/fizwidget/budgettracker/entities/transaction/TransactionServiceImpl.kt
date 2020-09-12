@@ -7,6 +7,7 @@ import com.fizwidget.budgettracker.common.TransactionId
 import com.github.doyaaaaaken.kotlincsv.dsl.csvReader
 import org.springframework.stereotype.Service
 import java.time.LocalDate
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 @Service
@@ -31,7 +32,7 @@ class TransactionServiceImpl(
 
 private fun parseTransaction(columns: Map<String, String>): ParsedTransaction {
     return ParsedTransaction(
-        date = LocalDate.parse(columns.extract("Date"), dateFormatter).atStartOfDay(),
+        date = LocalDate.parse(columns.extract("Date"), dateFormatter).atStartOfDay(ZoneId.of("Australia/Sydney")).toOffsetDateTime(),
         account = AccountId(columns.extract("Account")),
         description = columns.extract("Description"),
         amount = parseDollars(columns.extract("Credit")) + parseDollars(columns.extract("Debit")),

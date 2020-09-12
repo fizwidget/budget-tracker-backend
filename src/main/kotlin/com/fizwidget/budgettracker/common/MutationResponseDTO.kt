@@ -29,5 +29,5 @@ val Exception.graphQLErrorMessage: String
                     is CategoryCreationException -> "Error creating category."
                     is TransactionCreationException -> message
                 }
-            else -> "Unknown error."
+            else -> "Unknown error: ${this.message}"
         }

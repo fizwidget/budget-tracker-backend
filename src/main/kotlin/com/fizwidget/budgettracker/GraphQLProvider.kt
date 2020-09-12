@@ -10,6 +10,7 @@ import com.fizwidget.budgettracker.entities.statistics.StatisticsFetchers
 import com.fizwidget.budgettracker.entities.transaction.TransactionDTO
 import com.fizwidget.budgettracker.entities.transaction.TransactionFetchers
 import graphql.GraphQL
+import graphql.scalars.ExtendedScalars
 import graphql.schema.GraphQLSchema
 import graphql.schema.idl.RuntimeWiring
 import graphql.schema.idl.SchemaGenerator
@@ -31,7 +32,7 @@ class GraphQLProvider(
     private val statisticsFetchers: StatisticsFetchers
 ) {
     private val graphQL: GraphQL =
-        loadResource("/schema.graphqls")
+        loadSchema()
             .let(::buildSchema)
             .let(GraphQL::newGraphQL)
             .let(GraphQL.Builder::build)
@@ -81,6 +82,7 @@ class GraphQLProvider(
                     .dataFetcher("recordTransactions", transactionFetchers.record)
                     .dataFetcher("categoriseTransaction", transactionFetchers.categorise)
             )
+            .scalar(ExtendedScalars.DateTime)
             .build()
 }
 
@@ -92,8 +94,8 @@ private fun getGraphQLTypeName(entity: NodeDTO): String =
         else -> throw Exception("Unrecognised entity type: $entity")
     }
 
-private fun loadResource(path: String): String =
-    ClassPathResource(path)
+private fun loadSchema(): String =
+    ClassPathResource("/schema.graphqls")
         .let(ClassPathResource::getInputStream)
         .let(FileCopyUtils::copyToByteArray)
         .let { String(it, StandardCharsets.UTF_8) }

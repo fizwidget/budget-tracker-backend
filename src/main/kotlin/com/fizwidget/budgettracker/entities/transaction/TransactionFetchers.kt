@@ -105,7 +105,7 @@ data class TransactionDTO(
 fun Transaction.toDTO(): TransactionDTO =
     TransactionDTO(
         id = id.encode(),
-        date = date.toString(),
+        date = "${date}T16:39:57-08:00", // TODO: Fix properly
         description = description,
         amount = amount.value,
         accountId = account.encode(),
