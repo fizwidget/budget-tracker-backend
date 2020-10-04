@@ -4,9 +4,9 @@ import java.util.Base64
 
 sealed class EntityId
 
-data class AccountId(val value: String): EntityId()
-data class CategoryId(val value: Int): EntityId()
-data class TransactionId(val value: Int): EntityId()
+data class AccountId(val value: String) : EntityId()
+data class CategoryId(val value: Int) : EntityId()
+data class TransactionId(val value: Int) : EntityId()
 
 fun EntityId.encode(): String =
     when (this) {
@@ -52,5 +52,5 @@ fun decodeTransactionId(value: String): TransactionId =
         else -> throw UnexpectedEntityTypeIdException("Expected transaction ID")
     }
 
-class InvalidEntityIdException(override val message: String?): Exception(message)
-class UnexpectedEntityTypeIdException(override val message: String?): Exception(message)
+class InvalidEntityIdException(override val message: String?) : Exception(message)
+class UnexpectedEntityTypeIdException(override val message: String?) : Exception(message)

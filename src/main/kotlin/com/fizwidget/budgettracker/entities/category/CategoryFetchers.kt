@@ -53,7 +53,7 @@ class CategoryFetchers(
 data class CategoryDTO(
     override val id: String,
     val name: String
-): NodeDTO
+) : NodeDTO
 
 fun Category.toDTO(): CategoryDTO =
     CategoryDTO(

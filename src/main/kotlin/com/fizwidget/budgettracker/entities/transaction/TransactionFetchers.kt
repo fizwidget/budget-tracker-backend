@@ -106,7 +106,7 @@ data class TransactionDTO(
     val amount: Double,
     val accountId: String,
     val categoryId: String?
-): NodeDTO
+) : NodeDTO
 
 fun Transaction.toDTO(): TransactionDTO =
     TransactionDTO(

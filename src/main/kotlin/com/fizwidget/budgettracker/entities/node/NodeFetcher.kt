@@ -8,7 +8,6 @@ import com.fizwidget.budgettracker.entities.category.CategoryService
 import com.fizwidget.budgettracker.entities.category.toDTO
 import com.fizwidget.budgettracker.common.AccountId
 import com.fizwidget.budgettracker.common.CategoryId
-import com.fizwidget.budgettracker.common.EntityId
 import com.fizwidget.budgettracker.common.NodeDTO
 import com.fizwidget.budgettracker.common.TransactionId
 import com.fizwidget.budgettracker.common.decodeEntityId

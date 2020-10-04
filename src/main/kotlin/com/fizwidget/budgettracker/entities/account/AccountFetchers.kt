@@ -52,7 +52,7 @@ class AccountFetchers(
 data class AccountDTO(
     override val id: String,
     val name: String
-): NodeDTO
+) : NodeDTO
 
 fun Account.toDTO(): AccountDTO =
     AccountDTO(

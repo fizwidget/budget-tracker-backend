@@ -4,7 +4,7 @@ import org.springframework.boot.gradle.tasks.run.BootRun
 plugins {
     id("org.springframework.boot") version "2.2.2.RELEASE"
     id("io.spring.dependency-management") version "1.0.8.RELEASE"
-    id("org.jlleitschuh.gradle.ktlint") version "9.0.0"
+    id("org.jlleitschuh.gradle.ktlint") version "9.4.0"
     kotlin("jvm") version "1.4.10"
     kotlin("plugin.spring") version "1.4.10"
 }
