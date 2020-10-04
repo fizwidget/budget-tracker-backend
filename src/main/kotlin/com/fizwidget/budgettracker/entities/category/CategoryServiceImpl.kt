@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class CategoryServiceImpl(
-    val store: CategoryStore
+    private val store: CategoryStore
 ) : CategoryService {
     override fun create(name: String): Category =
         store.create(name).let { id ->

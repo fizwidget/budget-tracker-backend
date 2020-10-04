@@ -3,6 +3,7 @@ package com.fizwidget.budgettracker.entities.transaction
 import com.fizwidget.budgettracker.common.CategoryId
 import com.fizwidget.budgettracker.common.MutationResponseDTO
 import com.fizwidget.budgettracker.common.NodeDTO
+import com.fizwidget.budgettracker.common.TimeRange
 import com.fizwidget.budgettracker.common.decodeCategoryId
 import com.fizwidget.budgettracker.common.decodeTransactionId
 import com.fizwidget.budgettracker.common.encode
@@ -82,14 +83,19 @@ private fun parseFilterDate(date: String): LocalDateTime =
 private fun TransactionsFilterInputDTO.fromDTO(): TransactionsFilter =
     TransactionsFilter(
         categories = categories?.map { CategoryId(it.toInt()) } ?: emptyList(),
-        startDate = timeRange?.startDate?.let(::parseFilterDate),
-        endDate = timeRange?.endDate?.let(::parseFilterDate)
+        timeRange = timeRange?.fromDTO()
     )
 
 data class TimeRangeInputDTO(
     val startDate: String?,
     val endDate: String?
 )
+
+fun TimeRangeInputDTO.fromDTO(): TimeRange =
+    TimeRange(
+        from = startDate?.let(::parseFilterDate),
+        to = endDate?.let(::parseFilterDate),
+    )
 
 typealias TransactionsDTO = List<TransactionDTO>
 

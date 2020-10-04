@@ -5,8 +5,8 @@ plugins {
     id("org.springframework.boot") version "2.2.2.RELEASE"
     id("io.spring.dependency-management") version "1.0.8.RELEASE"
     id("org.jlleitschuh.gradle.ktlint") version "9.0.0"
-    kotlin("jvm") version "1.3.61"
-    kotlin("plugin.spring") version "1.3.61"
+    kotlin("jvm") version "1.4.10"
+    kotlin("plugin.spring") version "1.4.10"
 }
 
 group = "com.fizwidget"
@@ -59,6 +59,7 @@ tasks.withType<KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
         jvmTarget = "12"
+        languageVersion = "1.4"
     }
 }
 

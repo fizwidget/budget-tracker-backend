@@ -12,8 +12,7 @@ interface TransactionService {
 
 val defaultFilter = TransactionsFilter(
     categories = emptyList(),
-    startDate = null,
-    endDate = null
+    timeRange = null,
 )
 
 data class Csv(val value: String)

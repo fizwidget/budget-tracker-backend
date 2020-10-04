@@ -12,7 +12,7 @@ import java.sql.ResultSet
 
 @Component
 class TransactionStoreImpl(
-    val database: NamedParameterJdbcTemplate
+    private val database: NamedParameterJdbcTemplate
 ) : TransactionStore {
     override fun get(id: TransactionId): Transaction =
         database.query(

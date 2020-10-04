@@ -32,8 +32,6 @@ type Query {
     savingsRate(timeRange: TimeRangeInput): Float
 }
 
-# Connection!!!
-
 input TransactionsFilterInput {
     """
     Filter by categories.

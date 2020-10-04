@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatter
 
 @Service
 class TransactionServiceImpl(
-    val store: TransactionStore
+    private val store: TransactionStore
 ) : TransactionService {
     override fun get(id: TransactionId): Transaction =
         store.get(id)
