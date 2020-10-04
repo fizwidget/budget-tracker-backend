@@ -3,9 +3,12 @@ CREATE TABLE account (
     name varchar(100) NOT NULL UNIQUE
 );
 
+CREATE TYPE category_kind AS ENUM ('income_or_expense', 'internal_transfer');
+
 CREATE TABLE category (
     id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    name varchar(100) NOT NULL UNIQUE
+    name varchar(100) NOT NULL UNIQUE,
+    kind category_kind NOT NULL
 );
 
 CREATE TABLE transaction (

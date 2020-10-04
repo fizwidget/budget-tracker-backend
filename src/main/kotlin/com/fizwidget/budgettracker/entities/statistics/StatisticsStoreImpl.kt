@@ -12,12 +12,15 @@ class StatisticsStoreImpl(
     override fun savingsRate(timeRange: TimeRange?): Percentage =
         database.query(
             """
-            SELECT (1.0 - (summary.expenses / summary.income)) AS savingsRate
+            SELECT ((1.0 - (summary.expenses / summary.income)) * 100.0) AS savingsRate
             FROM (
                 SELECT
                 SUM(CASE WHEN amount > 0 THEN amount ELSE 0 END) AS income,
                 SUM(CASE WHEN amount < 0 THEN -amount ELSE 0 END) AS expenses
-                FROM $tableName
+                FROM $transactionsTableName
+                INNER JOIN $categoriesTableName
+                ON $transactionsTableName.category = $categoriesTableName.id
+                WHERE $categoriesTableName.kind = 'income_or_expense'
             ) AS summary
             """,
         ) { rs: ResultSet, _: Int ->
@@ -25,4 +28,5 @@ class StatisticsStoreImpl(
         }.first()
 }
 
-private const val tableName = "transaction"
+private const val transactionsTableName = "transaction"
+private const val categoriesTableName = "category"

@@ -117,7 +117,7 @@ tasks.register<Exec>("stopInDocker") {
     group = "application"
     description = "Stops the main application in Docker."
 
-    commandLine("docker-compose", "down", "springbootapp")
+    commandLine("docker-compose", "stop", "springbootapp")
 }
 
 tasks.withType<BootRun> {

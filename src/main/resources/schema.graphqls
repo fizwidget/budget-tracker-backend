@@ -62,19 +62,19 @@ type Transaction implements Node {
     """
     Date the transaction occured on (including timezone offset).
     """
-    date: DateTime!
+    date: DateTime
 
     """
     Description of the transaction, as per the bank record.
     """
-    description: String!
+    description: String
 
     """
     Dollar amount of the transaction.
 
     Positive values for money coming in, negative values for money going out.
     """
-    amount: Float!
+    amount: Float
 
     """
     Account the transaction occured in (e.g. "Savings").
@@ -93,7 +93,26 @@ type Category implements Node {
     """
     Category name, e.g. "Transport".
     """
-    name: String!
+    name: String
+
+    """
+    Indicates whether transactions in this category represent true income/expenses, or
+    "internal transfers" (i.e. money moving between accounts or investments owned by the
+    same person).
+    """
+    kind: CategoryKind
+}
+
+enum CategoryKind {
+    """
+    Transactions in this category represent regular income or expenses.
+    """
+    INCOME_OR_EXPENSE,
+    """
+    Transactions in this category represent internal transfers that should not contribute
+    to statistical calculations.
+    """
+    INTERNAL_TRANSFER,
 }
 
 type Account implements Node {
@@ -174,6 +193,13 @@ input CreateCategoryInput {
     Category name, e.g. "Transport".
     """
     name: String!
+
+    """
+    Indicates whether transactions in this category represent true income/expenses, or
+    "internal transfers" (i.e. money moving between accounts or investments owned by the
+    same person).
+    """
+    kind: CategoryKind!
 }
 
 type CreateCategoryPayload implements MutationPayload {

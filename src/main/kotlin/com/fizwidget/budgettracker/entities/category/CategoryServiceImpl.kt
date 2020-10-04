@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service
 class CategoryServiceImpl(
     private val store: CategoryStore
 ) : CategoryService {
-    override fun create(name: String): Category =
-        store.create(name).let { id ->
+    override fun create(name: String, kind: CategoryKind): Category =
+        store.create(name, kind).let { id ->
             if (id != null)
-                Category(id, name)
+                Category(id, name = name, kind = kind)
             else
                 throw CategoryCreationException()
         }

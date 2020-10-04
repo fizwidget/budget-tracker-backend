@@ -37,7 +37,7 @@ class CategoryFetchers(
                 success = true,
                 message = "Category created",
                 errorType = null,
-                category = service.create(input.name).toDTO()
+                category = service.create(input.name, input.kind).toDTO()
             )
         } catch (exception: Exception) {
             CreateCategoryResponseDTO(
@@ -62,7 +62,8 @@ fun Category.toDTO(): CategoryDTO =
     )
 
 data class CreateCategoryInputDTO(
-    val name: String
+    val name: String,
+    val kind: CategoryKind,
 )
 
 data class CreateCategoryResponseDTO(
