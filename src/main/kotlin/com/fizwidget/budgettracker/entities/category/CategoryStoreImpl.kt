@@ -16,17 +16,17 @@ class CategoryStoreImpl(
         val keyHolder = GeneratedKeyHolder()
 
         val count = database.update(
-            // Note: `SET name` is needed to make sure the ID is put into the key holder.
+            // Note: `ON CONFLICT` effectively makes this an upsert (update or insert)
             """
             INSERT INTO $tableName (name, kind) VALUES (:name, :kind::category_kind)
             ON CONFLICT (name) DO UPDATE
-            SET name = :name
+            SET (name, kind) = (:name, :kind::category_kind)
             RETURNING id
             """,
             MapSqlParameterSource(
                 mapOf(
                     "name" to name,
-                    "kind" to kind.name.toLowerCase(), // TODO: Explicit conversion!
+                    "kind" to kind.toDatabaseValue()
                 )
             ),
             keyHolder
@@ -61,6 +61,19 @@ private val mapper = RowMapper { rs: ResultSet, _: Int ->
     Category(
         id = CategoryId(rs.getInt(idColumn)),
         name = rs.getString(nameColumn),
-        kind = CategoryKind.valueOf(rs.getString(kindColumn))
+        kind = fromCategoryKindDatabaseValue(rs.getString(kindColumn))
     )
 }
+
+private fun CategoryKind.toDatabaseValue(): String =
+    when (this) {
+        CategoryKind.INCOME_OR_EXPENSE -> "income_or_expense"
+        CategoryKind.INTERNAL_TRANSFER -> "internal_transfer"
+    }
+
+private fun fromCategoryKindDatabaseValue(kind: String): CategoryKind =
+    when (kind) {
+        "income_or_expense" -> CategoryKind.INCOME_OR_EXPENSE
+        "internal_transfer" -> CategoryKind.INTERNAL_TRANSFER
+        else -> throw Exception("Unexpected category kind in database: $kind")
+    }

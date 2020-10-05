@@ -121,7 +121,7 @@ type Account implements Node {
     """
     Name of the account, e.g. "Savings".
     """
-    name: String!
+    name: String
 }
 
 type Mutation {

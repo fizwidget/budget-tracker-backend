@@ -52,13 +52,15 @@ class CategoryFetchers(
 
 data class CategoryDTO(
     override val id: String,
-    val name: String
+    val name: String,
+    val kind: CategoryKind,
 ) : NodeDTO
 
 fun Category.toDTO(): CategoryDTO =
     CategoryDTO(
         id = id.encode(),
-        name = name
+        name = name,
+        kind = kind,
     )
 
 data class CreateCategoryInputDTO(

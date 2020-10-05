@@ -11,6 +11,7 @@ class StatisticsStoreImpl(
 ) : StatisticsStore {
     override fun savingsRate(timeRange: TimeRange?): Percentage =
         database.query(
+            // TODO: Handle division by zero
             """
             SELECT ((1.0 - (summary.expenses / summary.income)) * 100.0) AS savingsRate
             FROM (
