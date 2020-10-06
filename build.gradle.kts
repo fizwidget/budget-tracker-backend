@@ -88,20 +88,18 @@ tasks.register("pushDockerImage") {
     }
 }
 
-val startPostgres = tasks.register<Exec>("startPostgres") {
+val startDatabase = tasks.register<Exec>("startDatabase") {
     group = "application"
     description = "Starts Postgres in a Docker container."
 
-    // Starts the "postgres" service defined in docker-compose.yml
-    commandLine("docker-compose", "up", "-d", "postgres")
+    commandLine("docker-compose", "up", "--detatch", "database")
 }
 
-tasks.register<Exec>("stopPostgres") {
+tasks.register<Exec>("stopDatabase") {
     group = "application"
     description = "Stops the Postgres Docker container."
 
-    // Stops the "postgres" container started by the "postgres" service (see docker-compose.yml)
-    commandLine("docker", "stop", "postgres")
+    commandLine("docker-compose", "stop", "database")
 }
 
 tasks.register<Exec>("startInDocker") {
@@ -110,16 +108,16 @@ tasks.register<Exec>("startInDocker") {
     group = "application"
     description = "Starts the main application in Docker."
 
-    commandLine("docker-compose", "up", "springbootapp")
+    commandLine("docker-compose", "up", "app")
 }
 
 tasks.register<Exec>("stopInDocker") {
     group = "application"
     description = "Stops the main application in Docker."
 
-    commandLine("docker-compose", "stop", "springbootapp")
+    commandLine("docker-compose", "stop", "app")
 }
 
 tasks.withType<BootRun> {
-    dependsOn(startPostgres)
+    dependsOn(startDatabase)
 }

@@ -1,28 +1,23 @@
 version: "3"
 services:
-  postgres:
+  database:
     image: postgres:12.1
-    network_mode: bridge
-    container_name: postgres
-    expose:
-      - 5432
     ports:
-      - 5432:5432
+      - "5432:5432" # For connecting via database explorer tool
     environment:
       - POSTGRES_PASSWORD=admin
       - POSTGRES_USER=postgres
       - POSTGRES_DB=testdb
     restart: unless-stopped
-  springbootapp:
+  app:
     build: .
-    network_mode: bridge
-    container_name: budget-tracker
-    expose:
-      - 8080
     ports:
-      - 8080:8080
+      - "8080:8080" # For GraphQL API
+      - "5005:5005" # For debugger
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/testdb
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/testdb
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=admin
     restart: unless-stopped
     depends_on:
-      - postgres
+      - database
