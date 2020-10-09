@@ -14,17 +14,17 @@ type Query {
     """
     List transactions with an optional filter.
     """
-    transactions(filter: TransactionsFilterInput): [Transaction!]
+    transactions(filter: TransactionsFilterInput): TransactionConnection
 
     """
     List all categories.
     """
-    categories: [Category!]
+    categories: CategoryConnection
 
     """
     List all bank accounts.
     """
-    accounts: [Account!]
+    accounts: AccountConnection
 
     """
     Calculate the savings rate (% of income that is saved/invested) for a particular time period.
@@ -87,6 +87,16 @@ type Transaction implements Node {
     category: Category
 }
 
+type TransactionConnection {
+    pageInfo: PageInfo!
+    edges: [TransactionConnection]
+}
+
+type TransactionEdge {
+    cursor: String!
+    node: Transaction
+}
+
 type Category implements Node {
     id: ID!,
 
@@ -101,6 +111,16 @@ type Category implements Node {
     same person).
     """
     kind: CategoryKind
+}
+
+type CategoryConnection {
+    pageInfo: PageInfo!
+    edges: [CategoryEdge]
+}
+
+type CategoryEdge {
+    cursor: String!
+    node: Category
 }
 
 enum CategoryKind {
@@ -122,6 +142,16 @@ type Account implements Node {
     Name of the account, e.g. "Savings".
     """
     name: String
+}
+
+type AccountConnection {
+    pageInfo: PageInfo!
+    edges: [AccountEdge]
+}
+
+type AccountEdge {
+    cursor: String!
+    node: Account
 }
 
 type Mutation {
@@ -226,9 +256,9 @@ type RecordTransactionsPayload implements MutationPayload {
     errorType: String
 
     """
-    List transactions with an optional filter (including the newly created ones).
+    The newly created transactions.
     """
-    transactions(filter: TransactionsFilterInput): [Transaction!]
+    transactions: [Transaction]
 }
 
 input CategoriseTransactionInput {
@@ -251,6 +281,13 @@ type CategoriseTransactionPayload implements MutationPayload {
     The categorised transaction.
     """
     transaction: Transaction
+}
+
+type PageInfo {
+    hasNextPage: Boolean!
+    hasPreviousPage: Boolean!
+    startCursor: String!
+    endCursor: String!
 }
 
 """

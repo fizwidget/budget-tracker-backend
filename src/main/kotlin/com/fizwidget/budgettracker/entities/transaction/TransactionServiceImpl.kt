@@ -20,11 +20,17 @@ class TransactionServiceImpl(
     override fun getAll(filter: TransactionsFilter): List<Transaction> =
         store.getAll(filter)
 
-    override fun record(transactions: Csv) =
+    override fun record(transactions: Csv): List<Transaction> {
+        val previousTransactionIds = getAll().map(Transaction::id).toSet()
+
         csvReader()
             .readAllWithHeader(transactions.value)
             .map(::parseTransaction)
             .let { store.record(it) }
+
+        // TODO: Implement this efficiently!
+        return getAll().filterNot { previousTransactionIds.contains(it.id) }
+    }
 
     override fun categorise(transactionId: TransactionId, categoryId: CategoryId?) =
         store.categorise(transactionId, categoryId)

@@ -1,11 +1,14 @@
 package com.fizwidget.budgettracker.entities.transaction
 
 import com.fizwidget.budgettracker.common.CategoryId
+import com.fizwidget.budgettracker.common.ConnectionDTO
 import com.fizwidget.budgettracker.common.MutationResponseDTO
 import com.fizwidget.budgettracker.common.NodeDTO
 import com.fizwidget.budgettracker.common.TimeRange
 import com.fizwidget.budgettracker.common.decodeCategoryId
 import com.fizwidget.budgettracker.common.decodeTransactionId
+import com.fizwidget.budgettracker.common.dummyEdge
+import com.fizwidget.budgettracker.common.dummyPageInfo
 import com.fizwidget.budgettracker.common.encode
 import com.fizwidget.budgettracker.common.graphQLErrorMessage
 import com.fizwidget.budgettracker.common.graphQLErrorType
@@ -21,21 +24,25 @@ class TransactionFetchers(
 ) {
     val getAll = DataFetcher { environment ->
         val filter: TransactionsFilterInputDTO = environment.parseArgument("filter")
-        service.getAll(filter.fromDTO()).map(Transaction::toDTO)
+        service.getAll(filter.fromDTO()).map(Transaction::toDTO).let {
+            ConnectionDTO(
+                pageInfo = dummyPageInfo,
+                edges = it.map(::dummyEdge)
+            )
+        }
     }
 
     val record = DataFetcher { environment ->
         try {
             val input: RecordTransactionsInputDTO = environment.parseArgument("input")
 
-            service.record(Csv(input.csv))
+            val newTransactions = service.record(Csv(input.csv))
 
             RecordTransactionsResponseDTO(
                 success = true,
                 message = "Transactions recorded",
                 errorType = null,
-                // TODO: Only return the newly created transactions
-                transactions = service.getAll().map(Transaction::toDTO)
+                transactions = newTransactions.map(Transaction::toDTO)
             )
         } catch (exception: Exception) {
             RecordTransactionsResponseDTO(

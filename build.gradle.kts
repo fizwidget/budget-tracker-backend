@@ -92,7 +92,7 @@ val startDatabase = tasks.register<Exec>("startDatabase") {
     group = "application"
     description = "Starts Postgres in a Docker container."
 
-    commandLine("docker-compose", "up", "--detatch", "database")
+    commandLine("docker-compose", "up", "--detach", "database")
 }
 
 tasks.register<Exec>("stopDatabase") {
