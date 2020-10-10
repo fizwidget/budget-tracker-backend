@@ -21,8 +21,12 @@ class AccountFetchers(
 ) {
     val getTransactionAccount = DataFetcher { environment ->
         val transaction: TransactionDTO = environment.getSource()
-        val id = decodeAccountId(transaction.accountId)
-        service.get(id)
+
+        transaction
+            .accountId
+            .let(::decodeAccountId)
+            .let(service::get)
+            ?.let(Account::toDTO)
     }
 
     val getAll = DataFetcher {

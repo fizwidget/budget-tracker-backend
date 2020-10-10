@@ -1,14 +1,5 @@
 version: "3"
 services:
-  database:
-    image: postgres:12.1
-    ports:
-      - "5432:5432" # For connecting via database explorer tool
-    environment:
-      - POSTGRES_PASSWORD=admin
-      - POSTGRES_USER=postgres
-      - POSTGRES_DB=testdb
-    restart: unless-stopped
   app:
     build: .
     ports:
@@ -21,3 +12,12 @@ services:
     restart: unless-stopped
     depends_on:
       - database
+  database:
+    image: postgres:12.1
+    ports:
+      - "5432:5432" # For connecting via database explorer tool
+    environment:
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=testdb
+    restart: unless-stopped

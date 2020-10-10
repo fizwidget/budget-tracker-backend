@@ -89,7 +89,7 @@ type Transaction implements Node {
 
 type TransactionConnection {
     pageInfo: PageInfo!
-    edges: [TransactionConnection]
+    edges: [TransactionEdge]
 }
 
 type TransactionEdge {
