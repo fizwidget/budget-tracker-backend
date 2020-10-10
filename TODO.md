@@ -1,7 +1,7 @@
 # TODOs
 
+* Starting application reuses old Docker image :/
 * Fix date handling.
-* Debug application when running in Docker container.
 * Pagination!
 * Get `recordTransactions` to only return the new transactions.
 * Switch to using Arrow library for error handling.
