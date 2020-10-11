@@ -36,20 +36,18 @@ class TransactionFetchers(
         try {
             val input: RecordTransactionsInputDTO = environment.parseArgument("input")
 
-            val newTransactions = service.record(Csv(input.csv))
+            service.record(Csv(input.csv))
 
             RecordTransactionsResponseDTO(
                 success = true,
                 message = "Transactions recorded",
                 errorType = null,
-                transactions = newTransactions.map(Transaction::toDTO)
             )
         } catch (exception: Exception) {
             RecordTransactionsResponseDTO(
                 success = false,
                 message = exception.graphQLErrorMessage,
                 errorType = exception.graphQLErrorType,
-                transactions = null
             )
         }
     }
@@ -104,8 +102,6 @@ fun TimeRangeInputDTO.fromDTO(): TimeRange =
         to = endDate?.let(::parseFilterDate),
     )
 
-typealias TransactionsDTO = List<TransactionDTO>
-
 data class TransactionDTO(
     override val id: String,
     val date: String,
@@ -133,7 +129,6 @@ data class RecordTransactionsResponseDTO(
     override val success: Boolean,
     override val message: String,
     override val errorType: String?,
-    val transactions: TransactionsDTO?
 ) : MutationResponseDTO
 
 data class CategoriseTransactionInputDTO(

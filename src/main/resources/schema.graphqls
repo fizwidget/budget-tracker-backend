@@ -14,17 +14,21 @@ type Query {
     """
     List transactions with an optional filter.
     """
-    transactions(filter: TransactionsFilterInput): TransactionConnection
+    transactions(
+        first: Int! = 20,
+        after: String = null,
+        filter: TransactionsFilterInput
+    ): TransactionConnection
 
     """
-    List all categories.
+    List categories.
     """
-    categories: CategoryConnection
+    categories(first: Int! = 20, after: String = null): CategoryConnection
 
     """
-    List all bank accounts.
+    List bank accounts.
     """
-    accounts: AccountConnection
+    accounts(first: Int! = 20, after: String = null): AccountConnection
 
     """
     Calculate the savings rate (% of income that is saved/invested) for a particular time period.
@@ -254,11 +258,6 @@ type RecordTransactionsPayload implements MutationPayload {
     success: Boolean!
     message: String!
     errorType: String
-
-    """
-    The newly created transactions.
-    """
-    transactions: [Transaction]
 }
 
 input CategoriseTransactionInput {
