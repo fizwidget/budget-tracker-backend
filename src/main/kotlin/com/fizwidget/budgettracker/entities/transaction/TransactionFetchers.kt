@@ -1,18 +1,16 @@
 package com.fizwidget.budgettracker.entities.transaction
 
 import com.fizwidget.budgettracker.common.CategoryId
-import com.fizwidget.budgettracker.common.ConnectionDTO
 import com.fizwidget.budgettracker.common.MutationResponseDTO
 import com.fizwidget.budgettracker.common.NodeDTO
 import com.fizwidget.budgettracker.common.TimeRange
 import com.fizwidget.budgettracker.common.decodeCategoryId
 import com.fizwidget.budgettracker.common.decodeTransactionId
-import com.fizwidget.budgettracker.common.dummyEdge
-import com.fizwidget.budgettracker.common.dummyPageInfo
 import com.fizwidget.budgettracker.common.encode
 import com.fizwidget.budgettracker.common.graphQLErrorMessage
 import com.fizwidget.budgettracker.common.graphQLErrorType
 import com.fizwidget.budgettracker.common.parseArgument
+import com.fizwidget.budgettracker.common.placeholderConnection
 import graphql.schema.DataFetcher
 import org.springframework.stereotype.Component
 import java.time.LocalDateTime
@@ -24,19 +22,15 @@ class TransactionFetchers(
 ) {
     val getAll = DataFetcher { environment ->
         val filter: TransactionsFilterInputDTO = environment.parseArgument("filter")
-        service.getAll(filter.fromDTO()).map(Transaction::toDTO).let {
-            ConnectionDTO(
-                pageInfo = dummyPageInfo,
-                edges = it.map(::dummyEdge)
-            )
-        }
+        service.getAll(filter.fromDTO()).map(Transaction::toDTO).let(::placeholderConnection)
     }
 
     val record = DataFetcher { environment ->
         try {
             val input: RecordTransactionsInputDTO = environment.parseArgument("input")
+            val transactionsCsv = Csv(input.csv)
 
-            service.record(Csv(input.csv))
+            service.record(transactionsCsv)
 
             RecordTransactionsResponseDTO(
                 success = true,
@@ -64,7 +58,7 @@ class TransactionFetchers(
                 success = true,
                 message = "Transaction categorised",
                 errorType = null,
-                transaction = service.get(transactionId).toDTO()
+                transaction = service.get(transactionId)?.toDTO()
             )
         } catch (exception: Exception) {
             CategoriseTransactionResponseDTO(

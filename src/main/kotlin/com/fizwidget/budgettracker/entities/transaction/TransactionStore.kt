@@ -6,7 +6,7 @@ import com.fizwidget.budgettracker.common.TransactionId
 import java.time.OffsetDateTime
 
 interface TransactionStore {
-    fun get(id: TransactionId): Transaction
+    fun getByIds(ids: List<TransactionId>): List<Transaction>
     fun getAll(filter: TransactionsFilter): List<Transaction>
     fun record(transactions: List<ParsedTransaction>)
     fun categorise(transactionId: TransactionId, categoryId: CategoryId?)

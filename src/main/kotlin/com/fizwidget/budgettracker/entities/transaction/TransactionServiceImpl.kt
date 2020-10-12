@@ -14,8 +14,8 @@ import java.time.format.DateTimeFormatter
 class TransactionServiceImpl(
     private val store: TransactionStore
 ) : TransactionService {
-    override fun get(id: TransactionId): Transaction =
-        store.get(id)
+    override fun get(id: TransactionId): Transaction? =
+        store.getByIds(listOf(id)).firstOrNull()
 
     override fun getAll(filter: TransactionsFilter): List<Transaction> =
         store.getAll(filter)

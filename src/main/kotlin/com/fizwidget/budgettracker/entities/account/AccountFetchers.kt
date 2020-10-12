@@ -1,12 +1,10 @@
 package com.fizwidget.budgettracker.entities.account
 
 import com.fizwidget.budgettracker.common.AccountId
-import com.fizwidget.budgettracker.common.ConnectionDTO
 import com.fizwidget.budgettracker.common.MutationResponseDTO
 import com.fizwidget.budgettracker.common.NodeDTO
 import com.fizwidget.budgettracker.common.decodeAccountId
-import com.fizwidget.budgettracker.common.dummyEdge
-import com.fizwidget.budgettracker.common.dummyPageInfo
+import com.fizwidget.budgettracker.common.placeholderConnection
 import com.fizwidget.budgettracker.common.encode
 import com.fizwidget.budgettracker.common.graphQLErrorMessage
 import com.fizwidget.budgettracker.common.graphQLErrorType
@@ -30,12 +28,7 @@ class AccountFetchers(
     }
 
     val getAll = DataFetcher {
-        service.getAll().map(Account::toDTO).let {
-            ConnectionDTO(
-                pageInfo = dummyPageInfo,
-                edges = it.map(::dummyEdge)
-            )
-        }
+        service.getAll().map(Account::toDTO).let(::placeholderConnection)
     }
 
     val create = DataFetcher { environment ->

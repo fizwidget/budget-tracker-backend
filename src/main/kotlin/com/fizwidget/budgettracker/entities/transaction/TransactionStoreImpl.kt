@@ -14,12 +14,12 @@ import java.sql.ResultSet
 class TransactionStoreImpl(
     private val database: NamedParameterJdbcTemplate
 ) : TransactionStore {
-    override fun get(id: TransactionId): Transaction =
+    override fun getByIds(ids: List<TransactionId>): List<Transaction> =
         database.query(
-            "SELECT * FROM $tableName WHERE $idColumn = :id",
-            mapOf("id" to id.value),
+            "SELECT * FROM $tableName WHERE $idColumn in (:ids)",
+            mapOf("ids" to ids.map(TransactionId::value)),
             mapper
-        ).first()
+        )
 
     override fun getAll(filter: TransactionsFilter): List<Transaction> =
         database.query(

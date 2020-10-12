@@ -1,5 +1,4 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import org.springframework.boot.gradle.tasks.run.BootRun
 
 plugins {
     id("org.springframework.boot") version "2.2.2.RELEASE"
@@ -42,13 +41,13 @@ dependencies {
 
     runtimeOnly("org.postgresql:postgresql")
 
+    developmentOnly("org.springframework.boot:spring-boot-devtools")
+
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }
-
-    developmentOnly("org.springframework.boot:spring-boot-devtools")
 }
 
 tasks.withType<Test> {
@@ -63,54 +62,29 @@ tasks.withType<KotlinCompile> {
     }
 }
 
-val buildDockerImage = tasks.register<Exec>("buildDockerImage") {
-    dependsOn(tasks.build)
-
-    group = "build"
-    description = "Build a docker image containing the application."
-
-    commandLine("docker-compose", "build")
-}
-
-tasks.register<Exec>("pushDockerImage") {
-    dependsOn(buildDockerImage)
-
-    group = "deploy"
-    description = "Push the docker image containing the application to the remote registry."
-
-    commandLine("docker-compose", "push")
-}
-
-val startDatabase = tasks.register<Exec>("startDatabase") {
-    group = "application"
-    description = "Starts Postgres in a Docker container."
-
-    commandLine("docker-compose", "start", "--detach", "database")
-}
-
-tasks.register<Exec>("stopDatabase") {
-    group = "application"
-    description = "Stops the Postgres Docker container."
-
-    commandLine("docker-compose", "stop", "database")
-}
-
-tasks.register<Exec>("startInDocker") {
-    dependsOn(buildDockerImage)
-
+tasks.register<Exec>("dockerRun") {
     group = "application"
     description = "Starts the main application in Docker."
-
+    dependsOn(dockerBuild)
     commandLine("docker-compose", "up")
 }
 
-tasks.register<Exec>("stopInDocker") {
+val dockerStop = tasks.register<Exec>("dockerStop") {
     group = "application"
     description = "Stops the main application in Docker."
-
-    commandLine("docker-compose", "down")
+    commandLine("docker-compose", "stop")
 }
 
-tasks.withType<BootRun> {
-    dependsOn(startDatabase)
+val dockerBuild = tasks.register<Exec>("dockerBuild") {
+    group = "build"
+    description = "Build a docker image containing the application."
+    dependsOn(tasks.build)
+    commandLine("docker-compose", "build")
+}
+
+tasks.register<Exec>("dockerPush") {
+    group = "deploy"
+    description = "Push the docker image containing the application to the remote registry."
+    dependsOn(dockerBuild)
+    commandLine("docker-compose", "push")
 }

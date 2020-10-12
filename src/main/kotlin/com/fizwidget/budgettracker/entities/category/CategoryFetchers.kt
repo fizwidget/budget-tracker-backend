@@ -1,11 +1,9 @@
 package com.fizwidget.budgettracker.entities.category
 
-import com.fizwidget.budgettracker.common.ConnectionDTO
 import com.fizwidget.budgettracker.common.MutationResponseDTO
 import com.fizwidget.budgettracker.common.NodeDTO
 import com.fizwidget.budgettracker.common.decodeCategoryId
-import com.fizwidget.budgettracker.common.dummyEdge
-import com.fizwidget.budgettracker.common.dummyPageInfo
+import com.fizwidget.budgettracker.common.placeholderConnection
 import com.fizwidget.budgettracker.common.encode
 import com.fizwidget.budgettracker.common.graphQLErrorMessage
 import com.fizwidget.budgettracker.common.graphQLErrorType
@@ -19,12 +17,7 @@ class CategoryFetchers(
     private val service: CategoryService
 ) {
     val getAll = DataFetcher {
-        service.getAll().map(Category::toDTO).let {
-            ConnectionDTO(
-                pageInfo = dummyPageInfo,
-                edges = it.map(::dummyEdge)
-            )
-        }
+        service.getAll().map(Category::toDTO).let(::placeholderConnection)
     }
 
     val getTransactionCategory = DataFetcher { environment ->

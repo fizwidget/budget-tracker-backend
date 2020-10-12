@@ -11,13 +11,6 @@ data class PageInfoDTO(
     val endCursor: String?,
 )
 
-val dummyPageInfo = PageInfoDTO(
-    hasPreviousPage = false,
-    hasNextPage = false,
-    startCursor = "",
-    endCursor = "",
-)
-
 data class ConnectionDTO<T>(
     val pageInfo: PageInfoDTO,
     val edges: List<EdgeDTO<T>>,
@@ -28,5 +21,15 @@ data class EdgeDTO<T>(
     val node: T,
 )
 
-fun <T> dummyEdge(node: T): EdgeDTO<T> =
-    EdgeDTO(cursor = "", node = node)
+fun <T> placeholderConnection(nodes: List<T>): ConnectionDTO<T> =
+    ConnectionDTO(
+        pageInfo = PageInfoDTO(
+            hasPreviousPage = false,
+            hasNextPage = false,
+            startCursor = "<TODO>",
+            endCursor = "<TODO>",
+        ),
+        edges = nodes.map {
+            EdgeDTO(cursor = "<TODO>", node = it)
+        }
+    )
