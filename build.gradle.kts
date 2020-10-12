@@ -13,7 +13,7 @@ group = "com.fizwidget"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_12
 
-val developmentOnly by configurations.creating
+val developmentOnly: Configuration by configurations.creating
 
 configurations {
     runtimeClasspath {
@@ -69,30 +69,23 @@ val buildDockerImage = tasks.register<Exec>("buildDockerImage") {
     group = "build"
     description = "Build a docker image containing the application."
 
-    commandLine("docker", "build", "--tag", "budget-tracker", ".")
+    commandLine("docker-compose", "build")
 }
 
-tasks.register("pushDockerImage") {
+tasks.register<Exec>("pushDockerImage") {
     dependsOn(buildDockerImage)
 
     group = "deploy"
     description = "Push the docker image containing the application to the remote registry."
 
-    doLast {
-        exec {
-            commandLine("docker", "tag", "budget-tracker", "fizwidget/budget-tracker")
-        }
-        exec {
-            commandLine("docker", "push", "fizwidget/budget-tracker")
-        }
-    }
+    commandLine("docker-compose", "push")
 }
 
 val startDatabase = tasks.register<Exec>("startDatabase") {
     group = "application"
     description = "Starts Postgres in a Docker container."
 
-    commandLine("docker-compose", "up", "--detach", "database")
+    commandLine("docker-compose", "start", "--detach", "database")
 }
 
 tasks.register<Exec>("stopDatabase") {
@@ -108,14 +101,14 @@ tasks.register<Exec>("startInDocker") {
     group = "application"
     description = "Starts the main application in Docker."
 
-    commandLine("docker-compose", "up", "app")
+    commandLine("docker-compose", "up")
 }
 
 tasks.register<Exec>("stopInDocker") {
     group = "application"
     description = "Stops the main application in Docker."
 
-    commandLine("docker-compose", "stop", "app")
+    commandLine("docker-compose", "down")
 }
 
 tasks.withType<BootRun> {
