@@ -1,9 +1,9 @@
 package com.fizwidget.budgettracker.domains.transaction
 
-import com.fizwidget.budgettracker.common.AccountDoesNotExistException
-import com.fizwidget.budgettracker.common.AccountId
-import com.fizwidget.budgettracker.common.CategoryId
-import com.fizwidget.budgettracker.common.TransactionId
+import com.fizwidget.budgettracker.domains.common.AccountDoesNotExistException
+import com.fizwidget.budgettracker.domains.common.AccountId
+import com.fizwidget.budgettracker.domains.common.CategoryId
+import com.fizwidget.budgettracker.domains.common.TransactionId
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate

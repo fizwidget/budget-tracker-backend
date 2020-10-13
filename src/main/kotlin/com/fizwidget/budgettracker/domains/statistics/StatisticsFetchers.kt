@@ -1,6 +1,6 @@
 package com.fizwidget.budgettracker.domains.statistics
 
-import com.fizwidget.budgettracker.common.parseArgument
+import com.fizwidget.budgettracker.domains.common.parseArgument
 import com.fizwidget.budgettracker.domains.transaction.TimeRangeInputDTO
 import com.fizwidget.budgettracker.domains.transaction.fromDTO
 import graphql.schema.DataFetcher

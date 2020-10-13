@@ -1,9 +1,9 @@
 package com.fizwidget.budgettracker.domains.transaction
 
-import com.fizwidget.budgettracker.common.AccountId
-import com.fizwidget.budgettracker.common.CategoryId
-import com.fizwidget.budgettracker.common.TimeRange
-import com.fizwidget.budgettracker.common.TransactionId
+import com.fizwidget.budgettracker.domains.common.AccountId
+import com.fizwidget.budgettracker.domains.common.CategoryId
+import com.fizwidget.budgettracker.domains.common.TimeRange
+import com.fizwidget.budgettracker.domains.common.TransactionId
 import java.util.Date
 
 data class Dollars(val value: Double)

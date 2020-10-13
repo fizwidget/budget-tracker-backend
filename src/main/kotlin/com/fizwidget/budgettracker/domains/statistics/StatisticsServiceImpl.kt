@@ -1,6 +1,6 @@
 package com.fizwidget.budgettracker.domains.statistics
 
-import com.fizwidget.budgettracker.common.TimeRange
+import com.fizwidget.budgettracker.domains.common.TimeRange
 import org.springframework.stereotype.Service
 
 @Service

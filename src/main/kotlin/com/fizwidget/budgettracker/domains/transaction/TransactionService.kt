@@ -1,7 +1,7 @@
 package com.fizwidget.budgettracker.domains.transaction
 
-import com.fizwidget.budgettracker.common.CategoryId
-import com.fizwidget.budgettracker.common.TransactionId
+import com.fizwidget.budgettracker.domains.common.CategoryId
+import com.fizwidget.budgettracker.domains.common.TransactionId
 
 interface TransactionService {
     fun get(id: TransactionId): Transaction?

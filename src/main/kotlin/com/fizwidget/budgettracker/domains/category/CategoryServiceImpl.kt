@@ -1,7 +1,7 @@
 package com.fizwidget.budgettracker.domains.category
 
-import com.fizwidget.budgettracker.common.CategoryCreationException
-import com.fizwidget.budgettracker.common.CategoryId
+import com.fizwidget.budgettracker.domains.common.CategoryCreationException
+import com.fizwidget.budgettracker.domains.common.CategoryId
 import org.springframework.stereotype.Service
 
 @Service

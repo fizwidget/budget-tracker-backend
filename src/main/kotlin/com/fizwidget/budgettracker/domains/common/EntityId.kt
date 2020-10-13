@@ -1,4 +1,4 @@
-package com.fizwidget.budgettracker.common
+package com.fizwidget.budgettracker.domains.common
 
 import java.util.Base64
 

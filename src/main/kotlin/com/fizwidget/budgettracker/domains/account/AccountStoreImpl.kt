@@ -1,7 +1,7 @@
 package com.fizwidget.budgettracker.domains.account
 
-import com.fizwidget.budgettracker.common.AccountCreationException
-import com.fizwidget.budgettracker.common.AccountId
+import com.fizwidget.budgettracker.domains.common.AccountCreationException
+import com.fizwidget.budgettracker.domains.common.AccountId
 import org.springframework.dao.DuplicateKeyException
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
