@@ -1,14 +1,14 @@
 package com.fizwidget.budgettracker
 
-import com.fizwidget.budgettracker.entities.account.AccountDTO
-import com.fizwidget.budgettracker.entities.account.AccountFetchers
-import com.fizwidget.budgettracker.entities.category.CategoryDTO
-import com.fizwidget.budgettracker.entities.category.CategoryFetchers
+import com.fizwidget.budgettracker.domains.account.AccountDTO
+import com.fizwidget.budgettracker.domains.account.AccountFetchers
+import com.fizwidget.budgettracker.domains.category.CategoryDTO
+import com.fizwidget.budgettracker.domains.category.CategoryFetchers
 import com.fizwidget.budgettracker.common.NodeDTO
-import com.fizwidget.budgettracker.entities.node.NodeFetcher
-import com.fizwidget.budgettracker.entities.statistics.StatisticsFetchers
-import com.fizwidget.budgettracker.entities.transaction.TransactionDTO
-import com.fizwidget.budgettracker.entities.transaction.TransactionFetchers
+import com.fizwidget.budgettracker.domains.node.NodeFetcher
+import com.fizwidget.budgettracker.domains.statistics.StatisticsFetchers
+import com.fizwidget.budgettracker.domains.transaction.TransactionDTO
+import com.fizwidget.budgettracker.domains.transaction.TransactionFetchers
 import graphql.GraphQL
 import graphql.scalars.ExtendedScalars
 import graphql.schema.GraphQLSchema

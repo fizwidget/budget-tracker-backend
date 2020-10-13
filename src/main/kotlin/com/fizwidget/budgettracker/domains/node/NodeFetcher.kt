@@ -1,4 +1,4 @@
-package com.fizwidget.budgettracker.entities.node
+package com.fizwidget.budgettracker.domains.node
 
 import com.fizwidget.budgettracker.common.AccountId
 import com.fizwidget.budgettracker.common.CategoryId
@@ -6,15 +6,15 @@ import com.fizwidget.budgettracker.common.NodeDTO
 import com.fizwidget.budgettracker.common.TransactionId
 import com.fizwidget.budgettracker.common.decodeEntityId
 import com.fizwidget.budgettracker.common.parseArgument
-import com.fizwidget.budgettracker.entities.account.Account
-import com.fizwidget.budgettracker.entities.account.AccountService
-import com.fizwidget.budgettracker.entities.account.toDTO
-import com.fizwidget.budgettracker.entities.category.Category
-import com.fizwidget.budgettracker.entities.category.CategoryService
-import com.fizwidget.budgettracker.entities.category.toDTO
-import com.fizwidget.budgettracker.entities.transaction.Transaction
-import com.fizwidget.budgettracker.entities.transaction.TransactionService
-import com.fizwidget.budgettracker.entities.transaction.toDTO
+import com.fizwidget.budgettracker.domains.account.Account
+import com.fizwidget.budgettracker.domains.account.AccountService
+import com.fizwidget.budgettracker.domains.account.toDTO
+import com.fizwidget.budgettracker.domains.category.Category
+import com.fizwidget.budgettracker.domains.category.CategoryService
+import com.fizwidget.budgettracker.domains.category.toDTO
+import com.fizwidget.budgettracker.domains.transaction.Transaction
+import com.fizwidget.budgettracker.domains.transaction.TransactionService
+import com.fizwidget.budgettracker.domains.transaction.toDTO
 import graphql.schema.DataFetcher
 import org.springframework.stereotype.Component
 

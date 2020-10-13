@@ -1,4 +1,4 @@
-package com.fizwidget.budgettracker.entities.transaction
+package com.fizwidget.budgettracker.domains.transaction
 
 import com.fizwidget.budgettracker.common.AccountDoesNotExistException
 import com.fizwidget.budgettracker.common.AccountId

@@ -1,8 +1,8 @@
-package com.fizwidget.budgettracker.entities.statistics
+package com.fizwidget.budgettracker.domains.statistics
 
 import com.fizwidget.budgettracker.common.parseArgument
-import com.fizwidget.budgettracker.entities.transaction.TimeRangeInputDTO
-import com.fizwidget.budgettracker.entities.transaction.fromDTO
+import com.fizwidget.budgettracker.domains.transaction.TimeRangeInputDTO
+import com.fizwidget.budgettracker.domains.transaction.fromDTO
 import graphql.schema.DataFetcher
 import org.springframework.stereotype.Component
 

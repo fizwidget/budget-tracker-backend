@@ -1,4 +1,4 @@
-package com.fizwidget.budgettracker.entities.statistics
+package com.fizwidget.budgettracker.domains.statistics
 
 import com.fizwidget.budgettracker.common.TimeRange
 

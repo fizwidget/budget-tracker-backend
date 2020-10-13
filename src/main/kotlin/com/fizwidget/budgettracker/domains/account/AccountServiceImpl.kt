@@ -1,4 +1,4 @@
-package com.fizwidget.budgettracker.entities.account
+package com.fizwidget.budgettracker.domains.account
 
 import com.fizwidget.budgettracker.common.AccountId
 import org.springframework.stereotype.Service

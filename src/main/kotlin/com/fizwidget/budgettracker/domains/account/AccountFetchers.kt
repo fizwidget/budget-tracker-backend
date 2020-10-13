@@ -1,4 +1,4 @@
-package com.fizwidget.budgettracker.entities.account
+package com.fizwidget.budgettracker.domains.account
 
 import com.fizwidget.budgettracker.common.AccountId
 import com.fizwidget.budgettracker.common.MutationResponseDTO
@@ -9,7 +9,7 @@ import com.fizwidget.budgettracker.common.encode
 import com.fizwidget.budgettracker.common.graphQLErrorMessage
 import com.fizwidget.budgettracker.common.graphQLErrorType
 import com.fizwidget.budgettracker.common.parseArgument
-import com.fizwidget.budgettracker.entities.transaction.TransactionDTO
+import com.fizwidget.budgettracker.domains.transaction.TransactionDTO
 import graphql.schema.DataFetcher
 import org.springframework.stereotype.Component
 

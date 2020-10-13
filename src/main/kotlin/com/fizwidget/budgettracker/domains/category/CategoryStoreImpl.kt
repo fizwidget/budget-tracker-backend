@@ -1,4 +1,4 @@
-package com.fizwidget.budgettracker.entities.category
+package com.fizwidget.budgettracker.domains.category
 
 import com.fizwidget.budgettracker.common.CategoryId
 import org.springframework.jdbc.core.RowMapper
