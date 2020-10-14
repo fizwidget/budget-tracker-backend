@@ -1,10 +1,10 @@
 package com.fizwidget.budgettracker.domains.common
 
-import java.time.LocalDateTime
+import java.time.OffsetDateTime
 
 data class TimeRange(
-    val from: LocalDateTime?,
-    val to: LocalDateTime?,
+    val from: OffsetDateTime?,
+    val to: OffsetDateTime?,
 ) {
     init {
         require(from == null || to == null || from <= to) {

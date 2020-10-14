@@ -21,10 +21,9 @@ import org.springframework.core.io.ClassPathResource
 import org.springframework.stereotype.Component
 import org.springframework.util.FileCopyUtils
 import java.nio.charset.StandardCharsets
-import kotlin.Exception
 
 @Component
-class GraphQLProvider(
+class GraphQLConfiguration(
     private val nodeFetcher: NodeFetcher,
     private val transactionFetchers: TransactionFetchers,
     private val categoryFetchers: CategoryFetchers,

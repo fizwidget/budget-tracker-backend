@@ -1,20 +1,22 @@
 package com.fizwidget.budgettracker.domains.category
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.fizwidget.budgettracker.domains.common.MutationResponseDTO
 import com.fizwidget.budgettracker.domains.common.NodeDTO
 import com.fizwidget.budgettracker.domains.common.decodeCategoryId
-import com.fizwidget.budgettracker.domains.common.placeholderConnection
 import com.fizwidget.budgettracker.domains.common.encode
 import com.fizwidget.budgettracker.domains.common.graphQLErrorMessage
 import com.fizwidget.budgettracker.domains.common.graphQLErrorType
 import com.fizwidget.budgettracker.domains.common.parseArgument
+import com.fizwidget.budgettracker.domains.common.placeholderConnection
 import com.fizwidget.budgettracker.domains.transaction.TransactionDTO
 import graphql.schema.DataFetcher
 import org.springframework.stereotype.Component
 
 @Component
 class CategoryFetchers(
-    private val service: CategoryService
+    private val service: CategoryService,
+    private val mapper: ObjectMapper,
 ) {
     val getAll = DataFetcher {
         service.getAll().map(Category::toDTO).let(::placeholderConnection)
@@ -32,7 +34,7 @@ class CategoryFetchers(
 
     val create = DataFetcher { environment ->
         try {
-            val input: CreateCategoryInputDTO = environment.parseArgument("input")
+            val input: CreateCategoryInputDTO = environment.parseArgument("input", mapper)
 
             CreateCategoryResponseDTO(
                 success = true,

@@ -1,21 +1,23 @@
 package com.fizwidget.budgettracker.domains.account
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.fizwidget.budgettracker.domains.common.AccountId
 import com.fizwidget.budgettracker.domains.common.MutationResponseDTO
 import com.fizwidget.budgettracker.domains.common.NodeDTO
 import com.fizwidget.budgettracker.domains.common.decodeAccountId
-import com.fizwidget.budgettracker.domains.common.placeholderConnection
 import com.fizwidget.budgettracker.domains.common.encode
 import com.fizwidget.budgettracker.domains.common.graphQLErrorMessage
 import com.fizwidget.budgettracker.domains.common.graphQLErrorType
 import com.fizwidget.budgettracker.domains.common.parseArgument
+import com.fizwidget.budgettracker.domains.common.placeholderConnection
 import com.fizwidget.budgettracker.domains.transaction.TransactionDTO
 import graphql.schema.DataFetcher
 import org.springframework.stereotype.Component
 
 @Component
 class AccountFetchers(
-    private val service: AccountService
+    private val service: AccountService,
+    private val mapper: ObjectMapper,
 ) {
     val getTransactionAccount = DataFetcher { environment ->
         val transaction: TransactionDTO = environment.getSource()
@@ -33,7 +35,7 @@ class AccountFetchers(
 
     val create = DataFetcher { environment ->
         try {
-            val input: CreateAccountInputDTO = environment.parseArgument("input")
+            val input: CreateAccountInputDTO = environment.parseArgument("input", mapper)
             val id = AccountId(input.id)
             val name = input.name
 

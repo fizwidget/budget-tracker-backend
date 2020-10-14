@@ -11,7 +11,6 @@ import com.fizwidget.budgettracker.domains.common.CategoryId
 import com.fizwidget.budgettracker.domains.common.NodeDTO
 import com.fizwidget.budgettracker.domains.common.TransactionId
 import com.fizwidget.budgettracker.domains.common.decodeEntityId
-import com.fizwidget.budgettracker.domains.common.parseArgument
 import com.fizwidget.budgettracker.domains.transaction.Transaction
 import com.fizwidget.budgettracker.domains.transaction.TransactionService
 import com.fizwidget.budgettracker.domains.transaction.toDTO
@@ -25,7 +24,7 @@ class NodeFetcher(
     private val transactionService: TransactionService
 ) {
     val get = DataFetcher<NodeDTO> { environment ->
-        val rawId: String = environment.parseArgument("id")
+        val rawId: String = environment.getArgument("id")
 
         when (val entityId = decodeEntityId(rawId)) {
             is AccountId -> accountService.get(entityId)?.let(Account::toDTO)

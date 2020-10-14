@@ -1,5 +1,6 @@
 package com.fizwidget.budgettracker.domains.transaction
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.fizwidget.budgettracker.domains.common.CategoryId
 import com.fizwidget.budgettracker.domains.common.MutationResponseDTO
 import com.fizwidget.budgettracker.domains.common.NodeDTO
@@ -13,21 +14,21 @@ import com.fizwidget.budgettracker.domains.common.parseArgument
 import com.fizwidget.budgettracker.domains.common.placeholderConnection
 import graphql.schema.DataFetcher
 import org.springframework.stereotype.Component
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
+import java.time.OffsetDateTime
 
 @Component
 class TransactionFetchers(
-    private val service: TransactionService
+    private val service: TransactionService,
+    private val mapper: ObjectMapper,
 ) {
     val getAll = DataFetcher { environment ->
-        val filter: TransactionsFilterInputDTO = environment.parseArgument("filter")
+        val filter: TransactionsFilterInputDTO = environment.parseArgument("filter", mapper)
         service.getAll(filter.fromDTO()).map(Transaction::toDTO).let(::placeholderConnection)
     }
 
     val record = DataFetcher { environment ->
         try {
-            val input: RecordTransactionsInputDTO = environment.parseArgument("input")
+            val input: RecordTransactionsInputDTO = environment.parseArgument("input", mapper)
             val transactionsCsv = Csv(input.csv)
 
             service.record(transactionsCsv)
@@ -48,7 +49,7 @@ class TransactionFetchers(
 
     val categorise = DataFetcher { environment ->
         try {
-            val input: CategoriseTransactionInputDTO = environment.parseArgument("input")
+            val input: CategoriseTransactionInputDTO = environment.parseArgument("input", mapper)
             val transactionId = decodeTransactionId(input.transactionId)
             val categoryId = input.categoryId?.let(::decodeCategoryId)
 
@@ -76,9 +77,6 @@ data class TransactionsFilterInputDTO(
     val timeRange: TimeRangeInputDTO?
 )
 
-private fun parseFilterDate(date: String): LocalDateTime =
-    LocalDateTime.parse(date, DateTimeFormatter.ISO_INSTANT)
-
 private fun TransactionsFilterInputDTO.fromDTO(): TransactionsFilter =
     TransactionsFilter(
         categories = categories?.map { CategoryId(it.toInt()) } ?: emptyList(),
@@ -86,19 +84,16 @@ private fun TransactionsFilterInputDTO.fromDTO(): TransactionsFilter =
     )
 
 data class TimeRangeInputDTO(
-    val startDate: String?,
-    val endDate: String?
+    val from: OffsetDateTime?,
+    val to: OffsetDateTime?
 )
 
 fun TimeRangeInputDTO.fromDTO(): TimeRange =
-    TimeRange(
-        from = startDate?.let(::parseFilterDate),
-        to = endDate?.let(::parseFilterDate),
-    )
+    TimeRange(from = from, to = to)
 
 data class TransactionDTO(
     override val id: String,
-    val date: String,
+    val date: OffsetDateTime,
     val description: String,
     val amount: Double,
     val accountId: String,
@@ -108,7 +103,7 @@ data class TransactionDTO(
 fun Transaction.toDTO(): TransactionDTO =
     TransactionDTO(
         id = id.encode(),
-        date = "${date}T16:39:57-08:00", // TODO: Fix properly
+        date = date,
         description = description,
         amount = amount.value,
         accountId = account.encode(),

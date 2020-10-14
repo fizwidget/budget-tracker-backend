@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.RowMapper
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Component
 import java.sql.ResultSet
+import java.time.OffsetDateTime
 
 @Component
 class TransactionStoreImpl(
@@ -78,7 +79,7 @@ class TransactionStoreImpl(
 private val mapper = RowMapper { rs: ResultSet, _: Int ->
     Transaction(
         id = TransactionId(rs.getInt(idColumn)),
-        date = rs.getDate(dateColumn),
+        date = rs.getObject(dateColumn, OffsetDateTime::class.java),
         account = AccountId(rs.getString(accountColumn)),
         description = rs.getString(descriptionColumn),
         amount = Dollars(rs.getDouble(amountColumn)),

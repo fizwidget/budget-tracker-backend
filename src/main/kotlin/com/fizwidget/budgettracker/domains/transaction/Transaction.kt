@@ -4,7 +4,7 @@ import com.fizwidget.budgettracker.domains.common.AccountId
 import com.fizwidget.budgettracker.domains.common.CategoryId
 import com.fizwidget.budgettracker.domains.common.TimeRange
 import com.fizwidget.budgettracker.domains.common.TransactionId
-import java.util.Date
+import java.time.OffsetDateTime
 
 data class Dollars(val value: Double)
 
@@ -13,7 +13,7 @@ operator fun Dollars.plus(other: Dollars): Dollars =
 
 data class Transaction(
     val id: TransactionId,
-    val date: Date,
+    val date: OffsetDateTime,
     val account: AccountId,
     val description: String,
     val amount: Dollars,

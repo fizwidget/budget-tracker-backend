@@ -53,11 +53,11 @@ input TimeRangeInput {
     """
     Start date for the time period (inclusive).
     """
-    startDate: DateTime
+    from: DateTime
     """
     End date for the time period (inclusive).
     """
-    endDate: DateTime
+    to: DateTime
 }
 
 type Transaction implements Node {
