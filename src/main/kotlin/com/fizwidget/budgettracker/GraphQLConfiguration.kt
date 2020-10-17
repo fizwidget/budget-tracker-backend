@@ -30,14 +30,14 @@ class GraphQLConfiguration(
     private val accountFetchers: AccountFetchers,
     private val statisticsFetchers: StatisticsFetchers
 ) {
+    @Bean
+    fun getGraphQL() = graphQL
+
     private val graphQL: GraphQL =
         loadSchema()
             .let(::buildSchema)
             .let(GraphQL::newGraphQL)
             .let(GraphQL.Builder::build)
-
-    @Bean
-    fun getGraphQL() = graphQL
 
     private fun buildSchema(schemaDefinition: String): GraphQLSchema =
         SchemaGenerator().makeExecutableSchema(

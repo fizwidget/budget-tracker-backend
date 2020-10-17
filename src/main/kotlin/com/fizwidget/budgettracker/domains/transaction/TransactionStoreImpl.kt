@@ -27,6 +27,7 @@ class TransactionStoreImpl(
             """
             SELECT * FROM $tableName
             ${filter.sql}
+            ORDER BY $dateColumn DESC
             """,
             filter.variables,
             mapper
