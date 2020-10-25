@@ -23,12 +23,18 @@ type Query {
     """
     List categories.
     """
-    categories(first: Int! = 20, after: String = null): CategoryConnection
+    categories(
+        first: Int! = 20,
+        after: String = null
+    ): CategoryConnection
 
     """
     List bank accounts.
     """
-    accounts(first: Int! = 20, after: String = null): AccountConnection
+    accounts(
+        first: Int! = 20,
+        after: String = null
+    ): AccountConnection
 
     """
     Calculate the savings rate (% of income that is saved/invested) for a particular time period.

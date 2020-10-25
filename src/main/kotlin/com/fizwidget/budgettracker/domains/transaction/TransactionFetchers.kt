@@ -1,7 +1,6 @@
 package com.fizwidget.budgettracker.domains.transaction
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fizwidget.budgettracker.domains.common.CategoryId
 import com.fizwidget.budgettracker.domains.common.MutationResponseDTO
 import com.fizwidget.budgettracker.domains.common.NodeDTO
 import com.fizwidget.budgettracker.domains.common.TimeRange
@@ -12,6 +11,7 @@ import com.fizwidget.budgettracker.domains.common.graphQLErrorMessage
 import com.fizwidget.budgettracker.domains.common.graphQLErrorType
 import com.fizwidget.budgettracker.domains.common.parseArgument
 import com.fizwidget.budgettracker.domains.common.placeholderConnection
+import com.fizwidget.budgettracker.domains.common.tryParseArgument
 import graphql.schema.DataFetcher
 import org.springframework.stereotype.Component
 import java.time.OffsetDateTime
@@ -22,8 +22,14 @@ class TransactionFetchers(
     private val mapper: ObjectMapper,
 ) {
     val getAll = DataFetcher { environment ->
-        val filter: TransactionsFilterInputDTO = environment.parseArgument("filter", mapper)
-        service.getAll(filter.fromDTO()).map(Transaction::toDTO).let(::placeholderConnection)
+        val first: Int = environment.parseArgument("first", mapper)
+        val after: String? = environment.tryParseArgument("after", mapper)
+        val filterDTO: TransactionsFilterInputDTO = environment.parseArgument("filter", mapper)
+        val filter = filterDTO.fromDTO(first, after)
+
+        service.get(filter)
+            .map(Transaction::toDTO)
+            .let(::placeholderConnection)
     }
 
     val record = DataFetcher { environment ->
@@ -73,14 +79,16 @@ class TransactionFetchers(
 }
 
 data class TransactionsFilterInputDTO(
-    val categories: List<String>?,
+    val categories: List<String?>?,
     val timeRange: TimeRangeInputDTO?
 )
 
-private fun TransactionsFilterInputDTO.fromDTO(): TransactionsFilter =
+private fun TransactionsFilterInputDTO.fromDTO(first: Int, after: String?): TransactionsFilter =
     TransactionsFilter(
-        categories = categories?.map { CategoryId(it.toInt()) } ?: emptyList(),
-        timeRange = timeRange?.fromDTO()
+        categories = categories?.map { it?.let(::decodeCategoryId) } ?: emptyList(),
+        timeRange = timeRange?.fromDTO(),
+        first = first,
+        after = after?.let(::TransactionCursor),
     )
 
 data class TimeRangeInputDTO(

@@ -15,23 +15,32 @@ import java.time.OffsetDateTime
 class TransactionStoreImpl(
     private val database: NamedParameterJdbcTemplate
 ) : TransactionStore {
-    override fun getByIds(ids: List<TransactionId>): List<Transaction> =
+    override fun get(ids: List<TransactionId>): List<Transaction> =
         database.query(
             "SELECT * FROM $tableName WHERE $idColumn in (:ids)",
             mapOf("ids" to ids.map(TransactionId::value)),
             mapper
         )
 
-    override fun getAll(filter: TransactionsFilter): List<Transaction> =
-        database.query(
+    override fun get(filter: TransactionsFilter): List<Transaction> {
+        val categoryIds = filter.categories.mapNotNull { it?.value }
+        val includeNullCategory = categoryIds.contains(null)
+        // TODO: Fix category filtering!
+        return database.query(
             """
             SELECT * FROM $tableName
-            ${filter.sql}
+            ${if (categoryIds.isNotEmpty()) "WHERE $categoryColumn in (:categoryIds)" else ""}
+            ${if (includeNullCategory) "OR $categoryColumn is NULL" else ""}
             ORDER BY $dateColumn DESC
+            LIMIT :limit
             """,
-            filter.variables,
+            mapOf(
+                "categoryIds" to categoryIds,
+                "limit" to filter.first
+            ),
             mapper
         )
+    }
 
     override fun record(transactions: List<ParsedTransaction>) {
         try {
@@ -92,17 +101,6 @@ private val mapper = RowMapper { rs: ResultSet, _: Int ->
         }
     )
 }
-
-private val TransactionsFilter.sql: String
-    get() =
-        if (categories.isEmpty())
-            ""
-        else
-            "WHERE $categoryColumn in (:categoryIds)"
-
-private val TransactionsFilter.variables: Map<String, Any>
-    get() =
-        mapOf("categoryIds" to categories.map(CategoryId::value))
 
 private const val tableName = "transaction"
 private const val idColumn = "id"

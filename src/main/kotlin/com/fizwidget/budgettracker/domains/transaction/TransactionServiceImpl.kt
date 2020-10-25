@@ -16,10 +16,10 @@ class TransactionServiceImpl(
     private val store: TransactionStore
 ) : TransactionService {
     override fun get(id: TransactionId): Transaction? =
-        store.getByIds(listOf(id)).firstOrNull()
+        store.get(listOf(id)).firstOrNull()
 
-    override fun getAll(filter: TransactionsFilter): List<Transaction> =
-        store.getAll(filter)
+    override fun get(filter: TransactionsFilter): List<Transaction> =
+        store.get(filter)
 
     override fun record(transactions: Csv) =
         csvReader()

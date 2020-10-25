@@ -20,7 +20,18 @@ data class Transaction(
     val category: CategoryId?,
 )
 
+val Transaction.cursor: TransactionCursor
+    get() = TransactionCursor("${id.value}:$date")
+
+data class TransactionCursor(val value: String) {
+    init {
+        // TODO: Validate!
+    }
+}
+
 data class TransactionsFilter(
-    val categories: List<CategoryId>,
+    val categories: List<CategoryId?>,
     val timeRange: TimeRange?,
+    val first: Int,
+    val after: TransactionCursor?,
 )
